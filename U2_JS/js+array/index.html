@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 13 & 14 — JavaScript ES6+ Ejemplos Prácticos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">PP2 <span class="logo-accent">JS</span></div>
+        <ul class="nav-links">
+            <li><a href="#variables">Variables</a></li>
+            <li><a href="#tipos">Tipos</a></li>
+            <li><a href="#funciones">Funciones</a></li>
+            <li><a href="#arrays">Arrays</a></li>
+            <li><a href="#metodos">map/filter</a></li>
+            <li><a href="#objetos">Objetos</a></li>
+            <li><a href="#chaining">Chaining</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-badge">Prácticas Profesionalizantes II · Programador Junior · Unidad 2</p>
+            <h1 class="hero-titulo">JavaScript ES6+<br>Ejemplos Prácticos</h1>
+            <p class="hero-subtitulo">Clase 13: Fundamentos + Clase 14: Arrays, Objetos y Métodos</p>
+            <p class="hero-temas">let/const · Tipos · Arrow Functions · Arrays · map · filter · find · reduce · Objetos · Destructuring · Spread · Chaining</p>
+            <a href="#variables" class="hero-btn">Explorar ejemplos ↓</a>
+        </div>
+    </section>
+
+    <main>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- CLASE 13, SLIDE 4 — Variables: let y const             -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion" id="variables">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 13 · Slide 4</span>
+                <h2 class="seccion-titulo">Variables: let y const (NUNCA var)</h2>
+                <p class="seccion-desc">const para todo por defecto · let solo si necesitás reasignar · Template literals con backticks</p>
+            </div>
+
+            <div class="contenido-grid">
+                <!-- Ejemplo interactivo: const vs let -->
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">const vs let</h3>
+                    <p class="card-instruccion">👆 Hacé click en "Ejecutar" para ver el resultado en la consola</p>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>// const: valor que NO cambia
+const nombre = "Ana";
+const PI = 3.14159;
+
+// let: valor que SÍ cambia
+let edad = 20;
+edad = 21;     // ✅ OK
+
+let contador = 0;
+contador++;    // ✅ OK (ahora vale 1)
+
+// PI = 3;    // ❌ ERROR: no se puede reasignar const</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploConstLet()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-constlet"></div>
+                </div>
+
+                <!-- Template Literals -->
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Template Literals (backticks)</h3>
+                    <p class="card-instruccion">Interpolación de variables con <code>${}</code></p>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const nombre = "Ana";
+const edad = 21;
+
+// ❌ Forma vieja (concatenación)
+console.log("Hola " + nombre + ", tenés " + edad + " años");
+
+// ✅ Template literals (backticks)
+console.log(`Hola ${nombre}, tenés ${edad} años`);
+
+// Se pueden evaluar expresiones
+console.log(`2 + 3 = ${2 + 3}`);
+console.log(`Precio con IVA: $${100 * 1.21}`);</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploTemplateLiterals()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-template"></div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Regla de oro</span>
+                Usá <strong>const</strong> SIEMPRE por defecto. Solo cambiá a <strong>let</strong> cuando necesites reasignar. <strong>Nunca</strong> uses var.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- CLASE 13, SLIDE 5 — Tipos de Datos + Condicionales    -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion seccion-alt" id="tipos">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 13 · Slide 5</span>
+                <h2 class="seccion-titulo">Tipos de Datos + Condicionales</h2>
+                <p class="seccion-desc">number · string · boolean · null · undefined · if/else · ternario · === vs ==</p>
+            </div>
+
+            <div class="contenido-grid">
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">typeof — Verificar tipos</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const entero = 42;
+const decimal = 3.14;
+const texto = "Hola";
+const activo = true;
+const vacio = null;
+let sinDefinir;
+
+console.log(typeof entero);     // "number"
+console.log(typeof decimal);    // "number"
+console.log(typeof texto);      // "string"
+console.log(typeof activo);     // "boolean"
+console.log(typeof vacio);      // "object" (bug histórico)
+console.log(typeof sinDefinir); // "undefined"</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploTipos()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-tipos"></div>
+                </div>
+
+                <!-- Condicionales interactivos -->
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Condicionales — Calculadora de notas</h3>
+                    <p class="card-instruccion">👆 Escribí una nota del 1 al 10 y presioná "Evaluar"</p>
+                    <div class="demo-area">
+                        <div class="demo-input-group">
+                            <label>Nota del alumno:</label>
+                            <input type="number" id="input-nota" min="1" max="10" value="7" class="demo-input">
+                            <button class="btn-ejecutar" onclick="ejemploCondicional()">Evaluar</button>
+                        </div>
+                        <div class="consola" id="consola-nota"></div>
+                    </div>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const nota = 7;
+
+if (nota >= 6) {
+  console.log("Aprobado ✅");
+} else if (nota >= 4) {
+  console.log("Recupera ⚠️");
+} else {
+  console.log("Desaprobado ❌");
+}
+
+// Ternario (if en una línea)
+const estado = nota >= 6 ? "Aprobado" : "Desaprobado";</code></pre>
+                    </div>
+                </div>
+
+                <!-- === vs == -->
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">⚠️ === vs == (Triple igual vs Doble igual)</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>// == (doble) hace conversiones raras
+console.log("5" == 5);    // true  😱 (convierte el string)
+console.log(0 == false);  // true  😱
+console.log("" == false); // true  😱
+
+// === (triple) compara valor Y tipo — SIEMPRE USAR ESTE
+console.log("5" === 5);    // false ✅
+console.log(0 === false);  // false ✅
+console.log("" === false); // false ✅</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploIgualdad()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-igualdad"></div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Importante</span>
+                Usá <code>===</code> (triple igual) para comparar en JS. El <code>==</code> (doble) hace conversiones inesperadas.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- CLASE 13, SLIDE 6 — Funciones y Arrow Functions       -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion" id="funciones">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 13 · Slide 6</span>
+                <h2 class="seccion-titulo">Funciones y Arrow Functions</h2>
+                <p class="seccion-desc">function · arrow function · parámetros por defecto · return implícito</p>
+            </div>
+
+            <div class="contenido-grid">
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">3 formas de escribir funciones</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>// 1. Función tradicional
+function saludar(nombre) {
+  return `Hola, ${nombre}!`;
+}
+
+// 2. Arrow function
+const saludar2 = (nombre) => {
+  return `Hola, ${nombre}!`;
+};
+
+// 3. Arrow function CORTA (1 línea)
+const saludar3 = (nombre) => `Hola, ${nombre}!`;
+
+// Más ejemplos cortos:
+const doble = (n) => n * 2;
+const sumar = (a, b) => a + b;</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploFunciones()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-funciones"></div>
+                </div>
+
+                <!-- Calculadora interactiva -->
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Práctica: Calculadora con Arrow Functions</h3>
+                    <p class="card-instruccion">👆 Ingresá un precio y elegí el IVA</p>
+                    <div class="demo-area">
+                        <div class="demo-input-group">
+                            <label>Precio:</label>
+                            <input type="number" id="input-precio" value="100" class="demo-input" style="width:100px">
+                            <label>IVA %:</label>
+                            <select id="input-iva" class="demo-input" style="width:90px">
+                                <option value="21">21%</option>
+                                <option value="10.5">10.5%</option>
+                                <option value="27">27%</option>
+                                <option value="0">0%</option>
+                            </select>
+                            <button class="btn-ejecutar" onclick="ejemploCalculadora()">Calcular</button>
+                        </div>
+                        <div class="consola" id="consola-calc"></div>
+                    </div>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>// Parámetros por defecto
+const calcularTotal = (precio, iva = 21) => {
+  return precio * (1 + iva / 100);
+};
+
+console.log(calcularTotal(100));      // 121
+console.log(calcularTotal(100, 10.5)); // 110.5</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Forma profesional</span>
+                Usá <code>const</code> + arrow function: <code>const miFuncion = (params) => { ... }</code>. Es el estándar en ES6+.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- CLASE 14, SLIDE 2 — Arrays                            -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion seccion-alt" id="arrays">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 14 · Slide 2</span>
+                <h2 class="seccion-titulo">Arrays — Crear y Manipular</h2>
+                <p class="seccion-desc">push · pop · unshift · includes · indexOf · destructuring · spread</p>
+            </div>
+
+            <div class="contenido-grid">
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Métodos básicos de Arrays</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const frutas = ["manzana", "banana", "naranja"];
+
+// Agregar y eliminar
+frutas.push("uva");       // al final
+frutas.pop();             // elimina último
+frutas.unshift("fresa");  // al inicio
+
+// Buscar
+frutas.includes("banana"); // true
+frutas.indexOf("naranja"); // 2
+
+// Longitud
+frutas.length;             // 4</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploArrays()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-arrays"></div>
+                </div>
+
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Destructuring + Spread</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const colores = ["rojo", "azul", "verde", "amarillo"];
+
+// Destructuring
+const [primero, segundo, ...resto] = colores;
+console.log(primero);  // "rojo"
+console.log(segundo);  // "azul"
+console.log(resto);    // ["verde", "amarillo"]
+
+// Spread: copiar y extender
+const masColores = [...colores, "violeta", "naranja"];
+console.log(masColores);
+// ["rojo","azul","verde","amarillo","violeta","naranja"]</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploDestructuring()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-destruct"></div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Para React</span>
+                Destructuring es MUY usado en React: <code>const [estado, setEstado] = useState(0)</code>. Practicá esta sintaxis.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- CLASE 14, SLIDE 3 — map, filter, find, reduce         -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion" id="metodos">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 14 · Slide 3</span>
+                <h2 class="seccion-titulo">Métodos Funcionales — Lo Más Importante de JS</h2>
+                <p class="seccion-desc">map() · filter() · find() · reduce() · forEach()</p>
+            </div>
+
+            <div class="contenido-grid">
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">map() — Transforma cada elemento</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const numeros = [1, 2, 3, 4, 5];
+
+// Duplicar cada número
+const dobles = numeros.map(n => n * 2);
+// [2, 4, 6, 8, 10]
+
+// Crear strings
+const textos = numeros.map(n => `Número ${n}`);
+// ["Número 1", "Número 2", ...]</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploMap()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-map"></div>
+                </div>
+
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">filter() — Filtra por condición</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// Solo pares
+const pares = numeros.filter(n => n % 2 === 0);
+// [2, 4, 6, 8, 10]
+
+// Mayores que 5
+const grandes = numeros.filter(n => n > 5);
+// [6, 7, 8, 9, 10]</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploFilter()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-filter"></div>
+                </div>
+
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">find() — Busca el primero que cumple</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+const primerMayor5 = numeros.find(n => n > 5);
+// 6 (solo el PRIMERO)
+
+const usuarios = [
+  { nombre: "Ana", edad: 22 },
+  { nombre: "Luis", edad: 17 },
+  { nombre: "Pedro", edad: 30 }
+];
+const menor = usuarios.find(u => u.edad < 18);
+// { nombre: "Luis", edad: 17 }</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploFind()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-find"></div>
+                </div>
+
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">reduce() — Acumula en un solo valor</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const numeros = [1, 2, 3, 4, 5];
+
+// Sumar todos
+const suma = numeros.reduce((acc, n) => acc + n, 0);
+// 15
+
+// Multiplicar todos
+const producto = numeros.reduce((acc, n) => acc * n, 1);
+// 120
+
+// Encontrar el máximo
+const max = numeros.reduce((a, b) => a > b ? a : b);
+// 5</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploReduce()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-reduce"></div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Fundamental</span>
+                <strong>map()</strong> y <strong>filter()</strong> son los métodos que MÁS vas a usar en React para renderizar listas. Son FUNDAMENTALES.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- CLASE 14, SLIDE 4 — Objetos                           -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion seccion-alt" id="objetos">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 14 · Slide 4</span>
+                <h2 class="seccion-titulo">Objetos + Destructuring + Spread</h2>
+                <p class="seccion-desc">Propiedades · Métodos · Destructuring · Spread operator · Copiar y extender</p>
+            </div>
+
+            <div class="contenido-grid">
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Crear y usar Objetos</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const alumno = {
+  nombre: "María",
+  edad: 22,
+  carrera: "Sistemas",
+  materias: ["Prog II", "Redes"],
+  presentarse() {
+    return `Soy ${this.nombre}, ${this.edad} años`;
+  }
+};
+
+console.log(alumno.nombre);
+console.log(alumno.materias[0]);
+console.log(alumno.presentarse());</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploObjetos()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-objetos"></div>
+                </div>
+
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Destructuring + Spread de Objetos</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const alumno = {
+  nombre: "María", edad: 22, carrera: "Sistemas"
+};
+
+// Destructuring
+const { nombre, edad, carrera } = alumno;
+console.log(nombre);   // "María"
+console.log(carrera);  // "Sistemas"
+
+// Spread: copiar y extender (NUEVO objeto)
+const actualizado = {
+  ...alumno,
+  edad: 23,
+  promedio: 8.5
+};
+console.log(actualizado);</code></pre>
+                    </div>
+                    <button class="btn-ejecutar" onclick="ejemploSpreadObj()">▶ Ejecutar</button>
+                    <div class="consola" id="consola-spreadobj"></div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Para React</span>
+                Destructuring de objetos y spread operator son la base de React: props, estado, componentes. Practicá mucho.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- CLASE 14, SLIDE 5 — Chaining                          -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion" id="chaining">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 14 · Slide 5</span>
+                <h2 class="seccion-titulo">Chaining — Encadenar Métodos como un Pro</h2>
+                <p class="seccion-desc">filter → map → reduce — Transformaciones complejas en pocas líneas</p>
+            </div>
+
+            <div class="contenido-grid">
+                <!-- Ejemplo interactivo de productos -->
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Sistema de Productos — filter + map + reduce</h3>
+                    <p class="card-instruccion">👆 Usá los filtros para ver el chaining en acción</p>
+
+                    <div class="demo-area">
+                        <div class="productos-filtros">
+                            <div class="demo-input-group">
+                                <label>Precio mínimo: $</label>
+                                <input type="number" id="input-preciomin" value="30" class="demo-input" style="width:80px">
+                                <label>Solo con stock:</label>
+                                <input type="checkbox" id="input-stock" checked class="demo-checkbox">
+                                <button class="btn-ejecutar" onclick="ejemploChaining()">Filtrar y Calcular</button>
+                            </div>
+                        </div>
+
+                        <!-- Tarjetas de productos -->
+                        <div class="productos-grid" id="productos-grid">
+                            <!-- se llenan con JS -->
+                        </div>
+
+                        <div class="consola" id="consola-chaining"></div>
+                    </div>
+
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+<pre><code>const productos = [
+  { nombre: "Laptop",  precio: 1200, stock: true },
+  { nombre: "Mouse",   precio: 25,   stock: true },
+  { nombre: "Monitor", precio: 350,  stock: false },
+  { nombre: "Teclado", precio: 60,   stock: true },
+  { nombre: "Webcam",  precio: 80,   stock: true },
+];
+
+// Chaining: filtrar → transformar → acumular
+const totalDisponible = productos
+  .filter(p => p.stock)             // solo con stock
+  .filter(p => p.precio > 30)       // precio > $30
+  .map(p => p.precio)               // extraer precios
+  .reduce((acc, precio) => acc + precio, 0);  // sumar
+
+// Obtener nombres
+const nombres = productos
+  .filter(p => p.stock)
+  .map(p => p.nombre)
+  .join(", ");</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Código profesional</span>
+                En React, vas a encadenar <code>filter</code> + <code>map</code> constantemente para renderizar listas filtradas. Cada línea es una transformación clara.
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-contenido">
+            <p class="footer-titulo">Prácticas Profesionalizantes II · Programador Junior</p>
+            <p class="footer-subtitulo">Clase 13: JS Fundamentos + Clase 14: Arrays, Objetos y Métodos Funcionales</p>
+            <p class="footer-creditos">Por Ing. Díaz Ayrton — 2026</p>
+        </div>
+    </footer>
+
+    <!-- JS al final del body (como dice la Slide 3) -->
+    <script src="app.js"></script>
+</body>
+</html>

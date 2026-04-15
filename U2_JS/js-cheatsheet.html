@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS Cheatsheet — Arrays & Objetos</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e12;
+    --surface: #16161d;
+    --border: #2a2a38;
+    --text: #e2e0ef;
+    --muted: #8886a0;
+    --accent-yellow: #ffd866;
+    --accent-green: #a9dc76;
+    --accent-pink: #ff6188;
+    --accent-blue: #78dce8;
+    --accent-purple: #ab9df2;
+    --accent-orange: #fc9867;
+    --code-bg: #1a1a24;
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    line-height: 1.6;
+    padding: 2rem 1.5rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-blue));
+    margin: 1.2rem auto 0;
+    border-radius: 2px;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--accent-yellow), var(--accent-orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  header p {
+    color: var(--muted);
+    margin-top: 0.4rem;
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 2.5rem 0 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .section-title .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+  }
+
+  .icon-arr { background: rgba(169,220,118,0.15); color: var(--accent-green); }
+  .icon-obj { background: rgba(171,157,242,0.15); color: var(--accent-purple); }
+  .icon-both { background: rgba(120,220,232,0.15); color: var(--accent-blue); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .card:hover {
+    border-color: #3d3d52;
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .method-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .tag {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-muta { background: rgba(255,97,136,0.15); color: var(--accent-pink); }
+  .tag-new  { background: rgba(169,220,118,0.15); color: var(--accent-green); }
+  .tag-bool { background: rgba(255,216,102,0.15); color: var(--accent-yellow); }
+  .tag-val  { background: rgba(120,220,232,0.15); color: var(--accent-blue); }
+  .tag-str  { background: rgba(171,157,242,0.15); color: var(--accent-purple); }
+
+  .card p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.6rem;
+  }
+
+  pre {
+    background: var(--code-bg);
+    border-radius: 7px;
+    padding: 0.7rem 0.9rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--text);
+    border: 1px solid #1f1f2e;
+  }
+
+  .kw  { color: var(--accent-pink); }
+  .fn  { color: var(--accent-green); }
+  .str { color: var(--accent-yellow); }
+  .num { color: var(--accent-purple); }
+  .cmt { color: #5c5a72; font-style: italic; }
+  .par { color: var(--accent-orange); }
+  .op  { color: var(--accent-pink); }
+  .res { color: var(--accent-blue); }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 1.2rem 1rem 3rem; }
+    h1 { font-size: 1.7rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>JavaScript Cheatsheet</h1>
+  <p>Métodos de Arrays & Objetos — referencia rápida</p>
+</header>
+
+<!-- ===================== ARRAYS ===================== -->
+<div class="section-title"><span class="icon icon-arr">[ ]</span> Arrays — Mutar</div>
+<div class="grid">
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.push()</span>
+      <span class="tag tag-muta">muta</span>
+    </div>
+    <p>Agrega uno o más elementos al final.</p>
+    <pre><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>];
+a.<span class="fn">push</span>(<span class="num">3</span>);        <span class="cmt">// [1, 2, 3]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.pop()</span>
+      <span class="tag tag-muta">muta</span>
+    </div>
+    <p>Elimina y devuelve el último elemento.</p>
+    <pre><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+a.<span class="fn">pop</span>();          <span class="cmt">// 3  →  a = [1, 2]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.unshift()</span>
+      <span class="tag tag-muta">muta</span>
+    </div>
+    <p>Agrega elementos al inicio.</p>
+    <pre><span class="kw">const</span> a = [<span class="num">2</span>, <span class="num">3</span>];
+a.<span class="fn">unshift</span>(<span class="num">1</span>);     <span class="cmt">// [1, 2, 3]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.shift()</span>
+      <span class="tag tag-muta">muta</span>
+    </div>
+    <p>Elimina y devuelve el primer elemento.</p>
+    <pre><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+a.<span class="fn">shift</span>();        <span class="cmt">// 1  →  a = [2, 3]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.splice()</span>
+      <span class="tag tag-muta">muta</span>
+    </div>
+    <p>Agrega, elimina o reemplaza elementos en cualquier posición.</p>
+    <pre><span class="kw">const</span> a = [<span class="str">'a'</span>,<span class="str">'b'</span>,<span class="str">'c'</span>,<span class="str">'d'</span>];
+a.<span class="fn">splice</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="str">'x'</span>); <span class="cmt">// ['a','x','d']</span>
+<span class="cmt">// desde idx 1, borra 2, inserta 'x'</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.sort()</span>
+      <span class="tag tag-muta">muta</span>
+    </div>
+    <p>Ordena el array (por defecto como strings).</p>
+    <pre><span class="kw">const</span> a = [<span class="num">3</span>, <span class="num">1</span>, <span class="num">2</span>];
+a.<span class="fn">sort</span>((<span class="par">a</span>, <span class="par">b</span>) <span class="op">=></span> a <span class="op">-</span> b); <span class="cmt">// [1, 2, 3]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.reverse()</span>
+      <span class="tag tag-muta">muta</span>
+    </div>
+    <p>Invierte el orden del array.</p>
+    <pre><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+a.<span class="fn">reverse</span>();      <span class="cmt">// [3, 2, 1]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.fill()</span>
+      <span class="tag tag-muta">muta</span>
+    </div>
+    <p>Rellena todo (o parte) del array con un valor.</p>
+    <pre><span class="kw">const</span> a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+a.<span class="fn">fill</span>(<span class="num">0</span>);         <span class="cmt">// [0, 0, 0]</span>
+a.<span class="fn">fill</span>(<span class="num">9</span>, <span class="num">1</span>, <span class="num">2</span>);   <span class="cmt">// [0, 9, 0]</span></pre>
+  </div>
+
+</div>
+
+<!-- ARRAYS — Nuevo array -->
+<div class="section-title"><span class="icon icon-arr">[ ]</span> Arrays — Nuevo Array</div>
+<div class="grid">
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.map()</span>
+      <span class="tag tag-new">nuevo arr</span>
+    </div>
+    <p>Transforma cada elemento y devuelve un nuevo array.</p>
+    <pre>[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>].<span class="fn">map</span>(<span class="par">x</span> <span class="op">=></span> x <span class="op">*</span> <span class="num">2</span>);
+<span class="cmt">// [2, 4, 6]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.filter()</span>
+      <span class="tag tag-new">nuevo arr</span>
+    </div>
+    <p>Devuelve un nuevo array con los que cumplen la condición.</p>
+    <pre>[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>].<span class="fn">filter</span>(<span class="par">x</span> <span class="op">=></span> x <span class="op">></span> <span class="num">2</span>);
+<span class="cmt">// [3, 4]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.flat()</span>
+      <span class="tag tag-new">nuevo arr</span>
+    </div>
+    <p>Aplana arrays anidados al nivel indicado.</p>
+    <pre>[[<span class="num">1</span>,<span class="num">2</span>],[<span class="num">3</span>,[<span class="num">4</span>]]].<span class="fn">flat</span>(<span class="num">1</span>);
+<span class="cmt">// [1, 2, 3, [4]]</span>
+[[<span class="num">1</span>,<span class="num">2</span>],[<span class="num">3</span>,[<span class="num">4</span>]]].<span class="fn">flat</span>(<span class="num">Infinity</span>);
+<span class="cmt">// [1, 2, 3, 4]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.flatMap()</span>
+      <span class="tag tag-new">nuevo arr</span>
+    </div>
+    <p>map() + flat(1) en un solo paso.</p>
+    <pre>[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>].<span class="fn">flatMap</span>(<span class="par">x</span> <span class="op">=></span> [x, x<span class="op">*</span><span class="num">2</span>]);
+<span class="cmt">// [1, 2, 2, 4, 3, 6]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.slice()</span>
+      <span class="tag tag-new">nuevo arr</span>
+    </div>
+    <p>Copia una porción del array (sin mutarlo).</p>
+    <pre>[<span class="str">'a'</span>,<span class="str">'b'</span>,<span class="str">'c'</span>,<span class="str">'d'</span>].<span class="fn">slice</span>(<span class="num">1</span>, <span class="num">3</span>);
+<span class="cmt">// ['b', 'c']</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.concat()</span>
+      <span class="tag tag-new">nuevo arr</span>
+    </div>
+    <p>Combina dos o más arrays.</p>
+    <pre>[<span class="num">1</span>].<span class="fn">concat</span>([<span class="num">2</span>], [<span class="num">3</span>]);
+<span class="cmt">// [1, 2, 3]</span></pre>
+  </div>
+
+</div>
+
+<!-- ARRAYS — Buscar -->
+<div class="section-title"><span class="icon icon-arr">[ ]</span> Arrays — Buscar & Comprobar</div>
+<div class="grid">
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.find()</span>
+      <span class="tag tag-val">valor</span>
+    </div>
+    <p>Devuelve el primer elemento que cumple la condición.</p>
+    <pre>[<span class="num">5</span>,<span class="num">12</span>,<span class="num">8</span>].<span class="fn">find</span>(<span class="par">x</span> <span class="op">=></span> x <span class="op">></span> <span class="num">10</span>);
+<span class="cmt">// 12</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.findIndex()</span>
+      <span class="tag tag-val">valor</span>
+    </div>
+    <p>Devuelve el índice del primer elemento que cumple.</p>
+    <pre>[<span class="num">5</span>,<span class="num">12</span>,<span class="num">8</span>].<span class="fn">findIndex</span>(<span class="par">x</span> <span class="op">=></span> x <span class="op">></span> <span class="num">10</span>);
+<span class="cmt">// 1</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.indexOf()</span>
+      <span class="tag tag-val">valor</span>
+    </div>
+    <p>Índice de la primera aparición (o -1).</p>
+    <pre>[<span class="str">'a'</span>,<span class="str">'b'</span>,<span class="str">'c'</span>].<span class="fn">indexOf</span>(<span class="str">'b'</span>);
+<span class="cmt">// 1</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.includes()</span>
+      <span class="tag tag-bool">boolean</span>
+    </div>
+    <p>¿El array contiene este valor?</p>
+    <pre>[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>].<span class="fn">includes</span>(<span class="num">2</span>);  <span class="cmt">// true</span>
+[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>].<span class="fn">includes</span>(<span class="num">9</span>);  <span class="cmt">// false</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.some()</span>
+      <span class="tag tag-bool">boolean</span>
+    </div>
+    <p>¿Algún elemento cumple la condición?</p>
+    <pre>[<span class="num">1</span>,<span class="num">3</span>,<span class="num">5</span>].<span class="fn">some</span>(<span class="par">x</span> <span class="op">=></span> x <span class="op">%</span> <span class="num">2</span> <span class="op">===</span> <span class="num">0</span>);
+<span class="cmt">// false (ninguno es par)</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.every()</span>
+      <span class="tag tag-bool">boolean</span>
+    </div>
+    <p>¿Todos los elementos cumplen?</p>
+    <pre>[<span class="num">2</span>,<span class="num">4</span>,<span class="num">6</span>].<span class="fn">every</span>(<span class="par">x</span> <span class="op">=></span> x <span class="op">%</span> <span class="num">2</span> <span class="op">===</span> <span class="num">0</span>);
+<span class="cmt">// true (todos pares)</span></pre>
+  </div>
+
+</div>
+
+<!-- ARRAYS — Reducir / Iterar -->
+<div class="section-title"><span class="icon icon-arr">[ ]</span> Arrays — Reducir & Iterar</div>
+<div class="grid">
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.reduce()</span>
+      <span class="tag tag-val">valor</span>
+    </div>
+    <p>Acumula todos los elementos en un solo valor.</p>
+    <pre>[<span class="num">10</span>,<span class="num">20</span>,<span class="num">30</span>].<span class="fn">reduce</span>((<span class="par">acc</span>, <span class="par">x</span>) <span class="op">=></span> acc <span class="op">+</span> x, <span class="num">0</span>);
+<span class="cmt">// 60</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.forEach()</span>
+      <span class="tag tag-str">void</span>
+    </div>
+    <p>Ejecuta una función por cada elemento (no devuelve nada).</p>
+    <pre>[<span class="str">'a'</span>,<span class="str">'b'</span>].<span class="fn">forEach</span>((<span class="par">v</span>, <span class="par">i</span>) <span class="op">=></span> {
+  console.<span class="fn">log</span>(i, v);
+}); <span class="cmt">// 0 'a'  1 'b'</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">.join()</span>
+      <span class="tag tag-str">string</span>
+    </div>
+    <p>Une los elementos en un string con el separador dado.</p>
+    <pre>[<span class="str">'hola'</span>,<span class="str">'mundo'</span>].<span class="fn">join</span>(<span class="str">' '</span>);
+<span class="cmt">// 'hola mundo'</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">Array.from()</span>
+      <span class="tag tag-new">nuevo arr</span>
+    </div>
+    <p>Crea un array desde un iterable o con un mapeo.</p>
+    <pre>Array.<span class="fn">from</span>({<span class="par">length</span>: <span class="num">3</span>}, (<span class="par">_</span>,<span class="par">i</span>) <span class="op">=></span> i);
+<span class="cmt">// [0, 1, 2]</span>
+Array.<span class="fn">from</span>(<span class="str">'abc'</span>);
+<span class="cmt">// ['a', 'b', 'c']</span></pre>
+  </div>
+
+</div>
+
+<!-- ===================== OBJETOS ===================== -->
+<div class="section-title"><span class="icon icon-obj">{ }</span> Objetos — Leer</div>
+<div class="grid">
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">Object.keys()</span>
+      <span class="tag tag-new">array</span>
+    </div>
+    <p>Devuelve las claves (keys) del objeto.</p>
+    <pre><span class="kw">const</span> o = { <span class="par">a</span>: <span class="num">1</span>, <span class="par">b</span>: <span class="num">2</span> };
+Object.<span class="fn">keys</span>(o);   <span class="cmt">// ['a', 'b']</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">Object.values()</span>
+      <span class="tag tag-new">array</span>
+    </div>
+    <p>Devuelve los valores del objeto.</p>
+    <pre><span class="kw">const</span> o = { <span class="par">a</span>: <span class="num">1</span>, <span class="par">b</span>: <span class="num">2</span> };
+Object.<span class="fn">values</span>(o);  <span class="cmt">// [1, 2]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">Object.entries()</span>
+      <span class="tag tag-new">array</span>
+    </div>
+    <p>Devuelve pares [clave, valor].</p>
+    <pre><span class="kw">const</span> o = { <span class="par">a</span>: <span class="num">1</span>, <span class="par">b</span>: <span class="num">2</span> };
+Object.<span class="fn">entries</span>(o);
+<span class="cmt">// [['a', 1], ['b', 2]]</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">Object.hasOwn()</span>
+      <span class="tag tag-bool">boolean</span>
+    </div>
+    <p>¿El objeto tiene esa propiedad propia?</p>
+    <pre><span class="kw">const</span> o = { <span class="par">x</span>: <span class="num">10</span> };
+Object.<span class="fn">hasOwn</span>(o, <span class="str">'x'</span>); <span class="cmt">// true</span>
+Object.<span class="fn">hasOwn</span>(o, <span class="str">'y'</span>); <span class="cmt">// false</span></pre>
+  </div>
+
+</div>
+
+<div class="section-title"><span class="icon icon-obj">{ }</span> Objetos — Crear & Combinar</div>
+<div class="grid">
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">Object.assign()</span>
+      <span class="tag tag-muta">muta target</span>
+    </div>
+    <p>Copia propiedades de uno o más objetos al target.</p>
+    <pre><span class="kw">const</span> a = { <span class="par">x</span>: <span class="num">1</span> };
+Object.<span class="fn">assign</span>(a, { <span class="par">y</span>: <span class="num">2</span> });
+<span class="cmt">// a = { x: 1, y: 2 }</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">{ ...spread }</span>
+      <span class="tag tag-new">nuevo obj</span>
+    </div>
+    <p>Crea un nuevo objeto combinando otros (inmutable).</p>
+    <pre><span class="kw">const</span> a = { <span class="par">x</span>: <span class="num">1</span> };
+<span class="kw">const</span> b = { <span class="op">...</span>a, <span class="par">y</span>: <span class="num">2</span> };
+<span class="cmt">// { x: 1, y: 2 }  (a no cambia)</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">Object.fromEntries()</span>
+      <span class="tag tag-new">nuevo obj</span>
+    </div>
+    <p>Convierte pares [clave, valor] en un objeto.</p>
+    <pre><span class="kw">const</span> pares = [[<span class="str">'a'</span>,<span class="num">1</span>],[<span class="str">'b'</span>,<span class="num">2</span>]];
+Object.<span class="fn">fromEntries</span>(pares);
+<span class="cmt">// { a: 1, b: 2 }</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">Object.freeze()</span>
+      <span class="tag tag-muta">inmutable</span>
+    </div>
+    <p>Congela el objeto: no se puede modificar.</p>
+    <pre><span class="kw">const</span> o = Object.<span class="fn">freeze</span>({ <span class="par">a</span>: <span class="num">1</span> });
+o.a = <span class="num">99</span>; <span class="cmt">// silenciosamente falla</span>
+<span class="cmt">// o.a sigue siendo 1</span></pre>
+  </div>
+
+</div>
+
+<!-- ===================== COMBOS ÚTILES ===================== -->
+<div class="section-title"><span class="icon icon-both">⚡</span> Combos Útiles</div>
+<div class="grid">
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">Destructuring</span>
+      <span class="tag tag-str">sintaxis</span>
+    </div>
+    <p>Extraer valores de arrays y objetos.</p>
+    <pre><span class="kw">const</span> [<span class="par">a</span>, , <span class="par">c</span>] = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]; <span class="cmt">// a=1, c=3</span>
+<span class="kw">const</span> {<span class="par">name</span>, <span class="par">age</span>} = {<span class="par">name</span>:<span class="str">'Ana'</span>, <span class="par">age</span>:<span class="num">25</span>};</pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">Optional Chaining</span>
+      <span class="tag tag-str">sintaxis</span>
+    </div>
+    <p>Acceder a propiedades profundas sin error.</p>
+    <pre><span class="kw">const</span> user = { <span class="par">address</span>: { <span class="par">city</span>: <span class="str">'BA'</span> } };
+user.<span class="par">address</span>?.<span class="par">city</span>;     <span class="cmt">// 'BA'</span>
+user.<span class="par">phone</span>?.<span class="par">number</span>;    <span class="cmt">// undefined</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">filter + map</span>
+      <span class="tag tag-new">nuevo arr</span>
+    </div>
+    <p>Filtrar y luego transformar — combo clásico.</p>
+    <pre><span class="kw">const</span> precios = [<span class="num">100</span>, <span class="num">50</span>, <span class="num">200</span>, <span class="num">30</span>];
+precios
+  .<span class="fn">filter</span>(<span class="par">p</span> <span class="op">=></span> p <span class="op">></span> <span class="num">50</span>)
+  .<span class="fn">map</span>(<span class="par">p</span> <span class="op">=></span> p <span class="op">*</span> <span class="num">1.21</span>);
+<span class="cmt">// [121, 242] (con IVA)</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="method-name fn">entries + reduce</span>
+      <span class="tag tag-val">valor</span>
+    </div>
+    <p>Iterar un objeto y acumular un resultado.</p>
+    <pre><span class="kw">const</span> cart = { <span class="par">pan</span>:<span class="num">2</span>, <span class="par">leche</span>:<span class="num">3</span> };
+Object.<span class="fn">entries</span>(cart)
+  .<span class="fn">reduce</span>((<span class="par">s</span>,[<span class="par">k</span>,<span class="par">v</span>]) <span class="op">=></span> s <span class="op">+</span> v, <span class="num">0</span>);
+<span class="cmt">// 5 (total items)</span></pre>
+  </div>
+
+</div>
+
+<footer>
+  JS Arrays & Objects Cheatsheet — ES2024
+</footer>
+
+</body>
+</html>

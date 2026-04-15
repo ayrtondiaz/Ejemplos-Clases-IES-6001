@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 14 — JS Arrays, Objetos y Métodos | PP2</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">PP2 <span class="logo-accent">JS</span></div>
+        <ul class="nav-links">
+            <li><a href="#arrays" class="nav-active">Arrays</a></li>
+            <li><a href="#metodos">map/filter</a></li>
+            <li><a href="#objetos">Objetos</a></li>
+            <li><a href="#chaining">Chaining</a></li>
+            <li class="nav-separator">|</li>
+            <li><a href="productos.html" class="nav-tp">🛒 TP5: Productos</a></li>
+            <li><a href="todo.html" class="nav-tp">✅ TP5: To-Do App</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-badge">Prácticas Profesionalizantes II · Programador Junior · Unidad 2</p>
+            <h1 class="hero-titulo">JavaScript: Arrays,<br>Objetos y Métodos</h1>
+            <p class="hero-subtitulo">Clase 14 — Ing. Díaz Ayrton</p>
+            <p class="hero-temas">Arrays · map · filter · find · reduce · Objetos · Destructuring · Spread · Chaining</p>
+            <div class="hero-links">
+                <a href="#arrays" class="hero-btn">Explorar Clase 14 ↓</a>
+                <a href="productos.html" class="hero-btn hero-btn-alt">🛒 TP5: Productos</a>
+                <a href="todo.html" class="hero-btn hero-btn-alt">✅ TP5: To-Do App</a>
+            </div>
+        </div>
+    </section>
+
+    <main>
+
+        <!-- ═══ ARRAYS ═══ -->
+        <section class="seccion" id="arrays">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 14 · Slide 2</span>
+                <h2 class="seccion-titulo">Arrays — Crear y Manipular</h2>
+                <p class="seccion-desc">push · pop · unshift · includes · indexOf · destructuring · spread</p>
+            </div>
+            <div class="contenido-grid">
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Métodos básicos</h3>
+                    <div class="code-block"><span class="code-label">JavaScript</span>
+<pre><code>const frutas = ["manzana", "banana", "naranja"];
+
+frutas.push("uva");        // al final
+frutas.pop();              // elimina último
+frutas.unshift("fresa");   // al inicio
+frutas.includes("banana"); // true
+frutas.indexOf("naranja"); // 2</code></pre></div>
+                    <button class="btn-ejecutar" onclick="runArrays()">▶ Ejecutar</button>
+                    <div class="consola" id="c-arrays"></div>
+                </div>
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Destructuring + Spread</h3>
+                    <div class="code-block"><span class="code-label">JavaScript</span>
+<pre><code>const colores = ["rojo", "azul", "verde", "amarillo"];
+
+// Destructuring
+const [primero, segundo, ...resto] = colores;
+
+// Spread: copiar y extender
+const mas = [...colores, "violeta", "naranja"];</code></pre></div>
+                    <button class="btn-ejecutar" onclick="runDestruct()">▶ Ejecutar</button>
+                    <div class="consola" id="c-destruct"></div>
+                </div>
+            </div>
+            <div class="tip-box"><span class="tip-label">🎯 Para React</span> Destructuring es MUY usado: <code>const [estado, setEstado] = useState(0)</code></div>
+        </section>
+
+        <!-- ═══ MÉTODOS FUNCIONALES ═══ -->
+        <section class="seccion seccion-alt" id="metodos">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 14 · Slide 3</span>
+                <h2 class="seccion-titulo">map · filter · find · reduce</h2>
+                <p class="seccion-desc">Los métodos más importantes de JavaScript — fundamentales para React</p>
+            </div>
+            <div class="contenido-grid">
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">map() — Transforma</h3>
+                    <div class="code-block"><span class="code-label">JavaScript</span>
+<pre><code>const nums = [1, 2, 3, 4, 5];
+const dobles = nums.map(n => n * 2);
+// [2, 4, 6, 8, 10]
+
+const textos = nums.map(n => `Nro ${n}`);
+// ["Nro 1", "Nro 2", ...]</code></pre></div>
+                    <button class="btn-ejecutar" onclick="runMap()">▶ Ejecutar</button>
+                    <div class="consola" id="c-map"></div>
+                </div>
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">filter() — Filtra</h3>
+                    <div class="code-block"><span class="code-label">JavaScript</span>
+<pre><code>const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const pares = nums.filter(n => n % 2 === 0);
+// [2, 4, 6, 8, 10]
+
+const grandes = nums.filter(n => n > 5);
+// [6, 7, 8, 9, 10]</code></pre></div>
+                    <button class="btn-ejecutar" onclick="runFilter()">▶ Ejecutar</button>
+                    <div class="consola" id="c-filter"></div>
+                </div>
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">find() — Busca el primero</h3>
+                    <div class="code-block"><span class="code-label">JavaScript</span>
+<pre><code>const usuarios = [
+  { nombre: "Ana", edad: 22 },
+  { nombre: "Luis", edad: 17 },
+  { nombre: "Pedro", edad: 30 }
+];
+const menor = usuarios.find(u => u.edad < 18);
+// { nombre: "Luis", edad: 17 }</code></pre></div>
+                    <button class="btn-ejecutar" onclick="runFind()">▶ Ejecutar</button>
+                    <div class="consola" id="c-find"></div>
+                </div>
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">reduce() — Acumula</h3>
+                    <div class="code-block"><span class="code-label">JavaScript</span>
+<pre><code>const nums = [1, 2, 3, 4, 5];
+const suma = nums.reduce((acc, n) => acc + n, 0);
+// 15
+
+const max = nums.reduce((a, b) => a > b ? a : b);
+// 5</code></pre></div>
+                    <button class="btn-ejecutar" onclick="runReduce()">▶ Ejecutar</button>
+                    <div class="consola" id="c-reduce"></div>
+                </div>
+            </div>
+            <div class="tip-box"><span class="tip-label">🎯 Fundamental</span> <strong>map()</strong> y <strong>filter()</strong> son los que MÁS vas a usar en React para renderizar listas.</div>
+        </section>
+
+        <!-- ═══ OBJETOS ═══ -->
+        <section class="seccion" id="objetos">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 14 · Slide 4</span>
+                <h2 class="seccion-titulo">Objetos + Destructuring + Spread</h2>
+                <p class="seccion-desc">Propiedades · Métodos · Destructuring · Spread operator</p>
+            </div>
+            <div class="contenido-grid">
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Crear y usar Objetos</h3>
+                    <div class="code-block"><span class="code-label">JavaScript</span>
+<pre><code>const alumno = {
+  nombre: "María",
+  edad: 22,
+  carrera: "Sistemas",
+  materias: ["Prog II", "Redes"],
+  presentarse() {
+    return `Soy ${this.nombre}, ${this.edad} años`;
+  }
+};</code></pre></div>
+                    <button class="btn-ejecutar" onclick="runObjetos()">▶ Ejecutar</button>
+                    <div class="consola" id="c-objetos"></div>
+                </div>
+                <div class="ejemplo-card">
+                    <h3 class="card-titulo">Destructuring + Spread</h3>
+                    <div class="code-block"><span class="code-label">JavaScript</span>
+<pre><code>const alumno = {
+  nombre: "María", edad: 22, carrera: "Sistemas"
+};
+
+// Destructuring
+const { nombre, edad, carrera } = alumno;
+
+// Spread: copiar y modificar
+const actualizado = { ...alumno, edad: 23, promedio: 8.5 };</code></pre></div>
+                    <button class="btn-ejecutar" onclick="runSpread()">▶ Ejecutar</button>
+                    <div class="consola" id="c-spread"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ CHAINING ═══ -->
+        <section class="seccion seccion-alt" id="chaining">
+            <div class="seccion-header">
+                <span class="seccion-badge">Clase 14 · Slide 5</span>
+                <h2 class="seccion-titulo">Chaining — Encadenar Métodos</h2>
+                <p class="seccion-desc">filter → map → reduce — El patrón que vas a usar todos los días en React</p>
+            </div>
+            <div class="contenido-grid">
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Ejercicio de alumnos — Slide 5 + TP5 Consigna 1</h3>
+                    <p class="card-instruccion">Los 4 ejercicios del TP5 resueltos con chaining</p>
+                    <div class="code-block"><span class="code-label">JavaScript</span>
+<pre><code>const alumnos = [
+  { nombre: "Ana", nota: 8 }, { nombre: "Carlos", nota: 5 },
+  { nombre: "María", nota: 9 }, { nombre: "Juan", nota: 3 },
+  { nombre: "Lucía", nota: 7 }, { nombre: "Pedro", nota: 6 },
+];
+
+// (a) Promedio con reduce
+const promedio = alumnos.map(a => a.nota)
+  .reduce((acc, n) => acc + n, 0) / alumnos.length;
+
+// (b) Aprobados con filter
+const aprobados = alumnos.filter(a => a.nota >= 6);
+
+// (c) Formatear con map
+const formateados = alumnos.map(a => `${a.nombre}: ${a.nota}`);
+
+// (d) Buscar con find
+const maria = alumnos.find(a => a.nombre === "María");</code></pre></div>
+                    <button class="btn-ejecutar" onclick="runChaining()">▶ Ejecutar</button>
+                    <div class="consola" id="c-chaining"></div>
+                </div>
+            </div>
+
+            <!-- Link a los TPs -->
+            <div class="tp-links">
+                <h3>Ejercicios del TP5 — Páginas Completas</h3>
+                <div class="tp-links-grid">
+                    <a href="productos.html" class="tp-link-card">
+                        <span class="tp-link-emoji">🛒</span>
+                        <h4>TP5 Consigna 2: Filtrado de Productos</h4>
+                        <p>8 productos · 4 filtros combinados · Actualización en tiempo real · map + filter + DOM</p>
+                    </a>
+                    <a href="todo.html" class="tp-link-card">
+                        <span class="tp-link-emoji">✅</span>
+                        <h4>TP5 Consigna 3: To-Do App</h4>
+                        <p>Agregar · Completar · Eliminar tareas · Contador dinámico · DOM + Eventos</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-titulo">Prácticas Profesionalizantes II · Programador Junior</p>
+        <p class="footer-subtitulo">Clase 14: Arrays, Objetos y Métodos + TP5: Productos y To-Do App</p>
+        <p class="footer-creditos">Por Ing. Díaz Ayrton — 2026</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

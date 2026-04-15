@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 11 — Redes, HTTP y Cliente-Servidor + Apache & Nginx</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- NAVBAR                                                     -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <nav class="navbar">
+        <div class="logo">PP2 <span class="logo-accent">HTTP</span></div>
+        <ul class="nav-links">
+            <li><a href="#cliente-servidor">Cliente-Servidor</a></li>
+            <li><a href="#metodos">Métodos</a></li>
+            <li><a href="#codigos">Códigos</a></li>
+            <li><a href="#redes">Redes</a></li>
+            <li><a href="#apache">Apache</a></li>
+            <li><a href="#nginx">Nginx</a></li>
+        </ul>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- HERO                                                       -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-badge">Prácticas Profesionalizantes II · Programador Junior · Unidad 2</p>
+            <h1 class="hero-titulo">Redes, HTTP y<br>Cliente-Servidor</h1>
+            <p class="hero-subtitulo">Clase 11 — Ing. Díaz Ayrton</p>
+            <p class="hero-temas">LAN · IP · DNS · Puertos · HTTP/HTTPS · Métodos · Códigos de Estado · Apache · Nginx · Virtual Hosts</p>
+            <a href="#cliente-servidor" class="hero-btn">Explorar contenido ↓</a>
+        </div>
+    </section>
+
+    <main>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- SLIDE 2 — Arquitectura Cliente-Servidor                -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion" id="cliente-servidor">
+            <div class="seccion-header">
+                <span class="seccion-badge">Slide 2</span>
+                <h2 class="seccion-titulo">Arquitectura Cliente-Servidor</h2>
+                <p class="seccion-desc">Todo en la web es Request → Response</p>
+            </div>
+
+            <!-- Diagrama interactivo -->
+            <div class="diagrama-cs">
+                <div class="diagrama-nodo diagrama-cliente">
+                    <div class="diagrama-icono">💻</div>
+                    <h3>Cliente</h3>
+                    <p>El software que <strong>PIDE</strong> recursos.</p>
+                    <ul>
+                        <li>Navegador (Chrome, Firefox)</li>
+                        <li>App móvil</li>
+                        <li>Postman</li>
+                    </ul>
+                    <div class="diagrama-burbuja diagrama-request">
+                        REQUEST →<br>
+                        <small>"Dame index.html"</small>
+                    </div>
+                </div>
+
+                <div class="diagrama-nodo diagrama-red">
+                    <div class="diagrama-icono">🌐</div>
+                    <h3>Red (Internet)</h3>
+                    <p>El camino entre cliente y servidor.</p>
+                    <ul>
+                        <li>Protocolos: HTTP, HTTPS, TCP/IP</li>
+                        <li>DNS traduce <code>google.com</code> → <code>142.250.x.x</code></li>
+                    </ul>
+                    <div class="diagrama-flecha">⇄</div>
+                </div>
+
+                <div class="diagrama-nodo diagrama-servidor">
+                    <div class="diagrama-icono">🖥️</div>
+                    <h3>Servidor</h3>
+                    <p>La computadora que <strong>RESPONDE</strong>.</p>
+                    <ul>
+                        <li>Apache, Nginx</li>
+                        <li>Node.js, FastAPI</li>
+                    </ul>
+                    <div class="diagrama-burbuja diagrama-response">
+                        ← RESPONSE<br>
+                        <small>"Acá tenés el HTML"</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulador Request-Response -->
+            <div class="contenido-grid">
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Simulador: ¿Qué pasa cuando escribís una URL?</h3>
+                    <p class="card-instruccion">👆 Hacé click en "Enviar Request" para ver el flujo completo paso a paso</p>
+                    <div class="demo-area">
+                        <div class="simulador">
+                            <div class="sim-barra">
+                                <span class="sim-barra-icono">🔒</span>
+                                <input class="sim-url" type="text" value="https://mi-portfolio.local/index.html" readonly>
+                                <button class="sim-btn" id="simBtn" onclick="simularRequest()">Enviar Request</button>
+                            </div>
+                            <div class="sim-pasos" id="simPasos">
+                                <div class="sim-paso sim-paso-idle">
+                                    <span class="sim-paso-num">▶</span>
+                                    Hacé click en "Enviar Request" para iniciar la simulación
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Concepto clave</span>
+                Cuando escribís una URL y das Enter, tu navegador envía un <strong>GET</strong> request al servidor. El servidor busca el archivo y lo devuelve como response.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- SLIDE 3 — Métodos HTTP                                 -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion seccion-alt" id="metodos">
+            <div class="seccion-header">
+                <span class="seccion-badge">Slide 3</span>
+                <h2 class="seccion-titulo">Métodos HTTP — Las Acciones de la Web</h2>
+                <p class="seccion-desc">Cada método indica QUÉ querés hacer con el recurso</p>
+            </div>
+
+            <div class="metodos-grid">
+                <div class="metodo-card metodo-get">
+                    <div class="metodo-header">
+                        <span class="metodo-badge">GET</span>
+                        <span class="metodo-desc-short">LEER</span>
+                    </div>
+                    <p>Pide un recurso al servidor. <strong>No modifica nada.</strong></p>
+                    <div class="metodo-ejemplo">
+                        <code>GET /productos</code>
+                        <small>→ Devuelve la lista de productos</small>
+                    </div>
+                    <div class="metodo-ejemplo">
+                        <code>GET /usuarios/42</code>
+                        <small>→ Devuelve el usuario con ID 42</small>
+                    </div>
+                    <p class="metodo-uso">📖 Cargar páginas, imágenes, datos</p>
+                </div>
+
+                <div class="metodo-card metodo-post">
+                    <div class="metodo-header">
+                        <span class="metodo-badge">POST</span>
+                        <span class="metodo-desc-short">CREAR</span>
+                    </div>
+                    <p>Envía datos para <strong>crear un recurso nuevo</strong>.</p>
+                    <div class="metodo-ejemplo">
+                        <code>POST /productos</code>
+                        <small>→ Crea un producto nuevo</small>
+                    </div>
+                    <div class="metodo-ejemplo">
+                        <code>POST /login</code>
+                        <small>→ Envía usuario y contraseña</small>
+                    </div>
+                    <p class="metodo-uso">📝 Formularios, registros, subir archivos</p>
+                </div>
+
+                <div class="metodo-card metodo-put">
+                    <div class="metodo-header">
+                        <span class="metodo-badge">PUT</span>
+                        <span class="metodo-desc-short">REEMPLAZAR</span>
+                    </div>
+                    <p>Envía datos para <strong>reemplazar completamente</strong> un recurso.</p>
+                    <div class="metodo-ejemplo">
+                        <code>PUT /usuarios/42</code>
+                        <small>→ Reemplaza TODOS los datos del usuario 42</small>
+                    </div>
+                    <p class="metodo-uso">🔄 Actualizar un recurso completo</p>
+                </div>
+
+                <div class="metodo-card metodo-patch">
+                    <div class="metodo-header">
+                        <span class="metodo-badge">PATCH</span>
+                        <span class="metodo-desc-short">MODIFICAR</span>
+                    </div>
+                    <p>Modifica <strong>parcialmente</strong> un recurso (solo algunos campos).</p>
+                    <div class="metodo-ejemplo">
+                        <code>PATCH /usuarios/42</code>
+                        <small>→ Cambia SOLO el email del usuario 42</small>
+                    </div>
+                    <p class="metodo-uso">✏️ Editar un campo específico</p>
+                </div>
+
+                <div class="metodo-card metodo-delete">
+                    <div class="metodo-header">
+                        <span class="metodo-badge">DELETE</span>
+                        <span class="metodo-desc-short">BORRAR</span>
+                    </div>
+                    <p>Elimina un recurso del servidor.</p>
+                    <div class="metodo-ejemplo">
+                        <code>DELETE /usuarios/42</code>
+                        <small>→ Elimina el usuario 42</small>
+                    </div>
+                    <p class="metodo-uso">🗑️ Borrar registros, archivos, cuentas</p>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Tip</span>
+                <strong>GET</strong> y <strong>POST</strong> son los más comunes. PUT, PATCH y DELETE los usaremos cuando hagamos APIs con FastAPI en la Unidad 4.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- SLIDE 4 — Códigos de Estado HTTP                       -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion" id="codigos">
+            <div class="seccion-header">
+                <span class="seccion-badge">Slide 4</span>
+                <h2 class="seccion-titulo">Códigos de Estado HTTP</h2>
+                <p class="seccion-desc">¿Qué pasó con mi request? El servidor responde con un número que lo explica.</p>
+            </div>
+
+            <!-- Códigos por grupo -->
+            <div class="codigos-grupos">
+                <div class="codigo-grupo codigo-2xx">
+                    <div class="codigo-grupo-header">
+                        <h3>2xx — Éxito ✅</h3>
+                        <p>Todo salió bien</p>
+                    </div>
+                    <div class="codigo-lista">
+                        <div class="codigo-item">
+                            <span class="codigo-num">200</span>
+                            <div>
+                                <strong>OK</strong>
+                                <p>Request exitoso. El servidor devolvió lo pedido.</p>
+                            </div>
+                        </div>
+                        <div class="codigo-item">
+                            <span class="codigo-num">201</span>
+                            <div>
+                                <strong>Created</strong>
+                                <p>Se creó un recurso nuevo (respuesta a POST).</p>
+                            </div>
+                        </div>
+                        <div class="codigo-item">
+                            <span class="codigo-num">204</span>
+                            <div>
+                                <strong>No Content</strong>
+                                <p>Éxito, pero sin contenido (respuesta a DELETE).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="codigo-grupo codigo-3xx">
+                    <div class="codigo-grupo-header">
+                        <h3>3xx — Redirección ↪️</h3>
+                        <p>El recurso se movió</p>
+                    </div>
+                    <div class="codigo-lista">
+                        <div class="codigo-item">
+                            <span class="codigo-num">301</span>
+                            <div>
+                                <strong>Moved Permanently</strong>
+                                <p>La URL cambió para siempre. Usá la nueva.</p>
+                            </div>
+                        </div>
+                        <div class="codigo-item">
+                            <span class="codigo-num">304</span>
+                            <div>
+                                <strong>Not Modified</strong>
+                                <p>El recurso no cambió. Usá tu caché.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="codigo-grupo codigo-4xx">
+                    <div class="codigo-grupo-header">
+                        <h3>4xx — Error del Cliente ❌</h3>
+                        <p>El cliente hizo algo mal</p>
+                    </div>
+                    <div class="codigo-lista">
+                        <div class="codigo-item">
+                            <span class="codigo-num">400</span>
+                            <div>
+                                <strong>Bad Request</strong>
+                                <p>Datos inválidos o mal formateados.</p>
+                            </div>
+                        </div>
+                        <div class="codigo-item">
+                            <span class="codigo-num">401</span>
+                            <div>
+                                <strong>Unauthorized</strong>
+                                <p>Necesitás autenticarte (login).</p>
+                            </div>
+                        </div>
+                        <div class="codigo-item">
+                            <span class="codigo-num">403</span>
+                            <div>
+                                <strong>Forbidden</strong>
+                                <p>Estás autenticado pero no tenés permiso.</p>
+                            </div>
+                        </div>
+                        <div class="codigo-item">
+                            <span class="codigo-num codigo-num-important">404</span>
+                            <div>
+                                <strong>Not Found</strong>
+                                <p>El recurso no existe. URL incorrecta.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="codigo-grupo codigo-5xx">
+                    <div class="codigo-grupo-header">
+                        <h3>5xx — Error del Servidor 💥</h3>
+                        <p>El servidor falló</p>
+                    </div>
+                    <div class="codigo-lista">
+                        <div class="codigo-item">
+                            <span class="codigo-num codigo-num-important">500</span>
+                            <div>
+                                <strong>Internal Server Error</strong>
+                                <p>Algo se rompió en el servidor. Bug en el código.</p>
+                            </div>
+                        </div>
+                        <div class="codigo-item">
+                            <span class="codigo-num">502</span>
+                            <div>
+                                <strong>Bad Gateway</strong>
+                                <p>El proxy (Nginx) no pudo contactar al backend.</p>
+                            </div>
+                        </div>
+                        <div class="codigo-item">
+                            <span class="codigo-num">503</span>
+                            <div>
+                                <strong>Service Unavailable</strong>
+                                <p>Servidor sobrecargado o en mantenimiento.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Memorizar</span>
+                <strong>200</strong> (OK), <strong>201</strong> (Created), <strong>400</strong> (Bad Request), <strong>401</strong> (Unauthorized), <strong>404</strong> (Not Found), <strong>500</strong> (Server Error).
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- SLIDE 5 — Redes LAN                                   -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion seccion-alt" id="redes">
+            <div class="seccion-header">
+                <span class="seccion-badge">Slide 5</span>
+                <h2 class="seccion-titulo">Redes LAN — Conceptos Fundamentales</h2>
+                <p class="seccion-desc">IP · MAC · Puertos · DNS · localhost · TCP/IP</p>
+            </div>
+
+            <div class="redes-grid">
+                <div class="red-card">
+                    <div class="red-icono">🏠</div>
+                    <h4>Dirección IP</h4>
+                    <p>Identificador numérico de cada dispositivo en la red.</p>
+                    <div class="red-ejemplo">
+                        <code>192.168.1.100</code> — tu PC en la red local<br>
+                        <code>127.0.0.1</code> — <strong>localhost</strong> (tu propia máquina)
+                    </div>
+                </div>
+                <div class="red-card">
+                    <div class="red-icono">🏷️</div>
+                    <h4>Dirección MAC</h4>
+                    <p>Identificador <strong>físico y único</strong> de la placa de red. No cambia.</p>
+                    <div class="red-ejemplo">
+                        <code>A4:5E:60:B2:F1:3C</code>
+                    </div>
+                </div>
+                <div class="red-card">
+                    <div class="red-icono">🚪</div>
+                    <h4>Puerto</h4>
+                    <p>Número que identifica un servicio específico en una máquina.</p>
+                    <div class="red-ejemplo">
+                        <code>:80</code> — HTTP<br>
+                        <code>:443</code> — HTTPS<br>
+                        <code>:3000</code> — Live Server<br>
+                        <code>:8000</code> — FastAPI / Backend
+                    </div>
+                </div>
+                <div class="red-card">
+                    <div class="red-icono">📖</div>
+                    <h4>DNS</h4>
+                    <p>Traduce nombres de dominio a direcciones IP.</p>
+                    <div class="red-ejemplo">
+                        <code>google.com</code> → <code>142.250.185.14</code><br>
+                        <code>github.com</code> → <code>140.82.121.4</code>
+                    </div>
+                </div>
+                <div class="red-card">
+                    <div class="red-icono">🔄</div>
+                    <h4>TCP/IP</h4>
+                    <p>Protocolo que asegura que los datos lleguen completos y en orden.</p>
+                    <div class="red-ejemplo">
+                        TCP divide los datos en paquetes, los numera y los reensambla al llegar.
+                    </div>
+                </div>
+                <div class="red-card">
+                    <div class="red-icono">🏡</div>
+                    <h4>localhost</h4>
+                    <p>Tu propia computadora actuando como servidor.</p>
+                    <div class="red-ejemplo">
+                        <code>http://localhost:3000</code><br>
+                        = <code>http://127.0.0.1:3000</code><br>
+                        <small>El navegador habla con tu propia máquina</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Para la U4</span>
+                Tu backend correrá en <code>localhost:8000</code> y tu frontend en <code>localhost:5173</code>. Dos puertos, misma máquina.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- SLIDES 9-13 — Apache + Virtual Hosts                   -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion" id="apache">
+            <div class="seccion-header">
+                <span class="seccion-badge">Slides 9-13</span>
+                <h2 class="seccion-titulo">Apache — Servidor Web + Virtual Hosts</h2>
+                <p class="seccion-desc">Instalación · DocumentRoot · Virtual Hosts · Dominio local personalizado</p>
+            </div>
+
+            <!-- Qué es un servidor web -->
+            <div class="servidor-flujo">
+                <div class="servidor-paso">
+                    <div class="servidor-paso-icono">📡</div>
+                    <h4>1. Recibe Request</h4>
+                    <p>Escucha en puerto 80 (HTTP) o 443 (HTTPS). Cuando un navegador pide una URL, el servidor recibe el request.</p>
+                </div>
+                <div class="servidor-flecha">→</div>
+                <div class="servidor-paso">
+                    <div class="servidor-paso-icono">⚙️</div>
+                    <h4>2. Procesa</h4>
+                    <p>Busca el archivo en el disco (index.html, style.css). O ejecuta código backend (PHP, Python, Node).</p>
+                </div>
+                <div class="servidor-flecha">→</div>
+                <div class="servidor-paso">
+                    <div class="servidor-paso-icono">📤</div>
+                    <h4>3. Envía Response</h4>
+                    <p>Devuelve el archivo con un código de estado (200, 404). El navegador renderiza el HTML/CSS/JS.</p>
+                </div>
+            </div>
+
+            <div class="contenido-grid">
+                <!-- Instalación -->
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Paso 1: Instalar Apache en Ubuntu</h3>
+                    <div class="code-block">
+                        <span class="code-label">Terminal</span>
+<pre><code># Instalar Apache
+sudo apt update
+sudo apt install apache2 -y
+
+# Verificar que está corriendo
+sudo systemctl status apache2
+# ● apache2.service - The Apache HTTP Server
+#   Active: active (running)  ← debe decir esto
+
+# Abrir en el navegador:
+# http://localhost
+# Vas a ver: "It works!"
+
+# ¿Dónde están los archivos del sitio?
+# /var/www/html/     ← DocumentRoot por defecto
+
+# Copiar tu sitio ahí:
+sudo cp -r ~/mi-primer-sitio/* /var/www/html/
+# Ahora http://localhost muestra TU sitio</code></pre>
+                    </div>
+                </div>
+
+                <!-- Virtual Host paso a paso -->
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Paso 2: Crear Virtual Host (tu propio dominio local)</h3>
+                    <div class="code-block">
+                        <span class="code-label">Terminal</span>
+<pre><code># 1. Crear carpeta para el proyecto
+sudo mkdir -p /var/www/mi-portfolio
+sudo cp -r ~/mi-primer-sitio/* /var/www/mi-portfolio/
+sudo chown -R $USER:$USER /var/www/mi-portfolio
+
+# 2. Crear archivo de configuración
+sudo nano /etc/apache2/sites-available/mi-portfolio.conf</code></pre>
+                    </div>
+                </div>
+
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Paso 3: Contenido del Virtual Host</h3>
+                    <div class="code-block">
+                        <span class="code-label">Apache — /etc/apache2/sites-available/mi-portfolio.conf</span>
+<pre><code>&lt;VirtualHost *:80&gt;
+    ServerName mi-portfolio.local
+    DocumentRoot /var/www/mi-portfolio
+
+    &lt;Directory /var/www/mi-portfolio&gt;
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+
+    ErrorLog  ${APACHE_LOG_DIR}/portfolio-error.log
+    CustomLog ${APACHE_LOG_DIR}/portfolio-access.log combined
+&lt;/VirtualHost&gt;</code></pre>
+                    </div>
+                    <div class="config-explicacion">
+                        <div class="config-linea">
+                            <code>ServerName</code>
+                            <span>→ El dominio local que vas a escribir en el navegador</span>
+                        </div>
+                        <div class="config-linea">
+                            <code>DocumentRoot</code>
+                            <span>→ La carpeta donde están tus archivos HTML/CSS/JS</span>
+                        </div>
+                        <div class="config-linea">
+                            <code>ErrorLog</code>
+                            <span>→ Archivo donde se guardan los errores del sitio</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Paso 4: Activar y probar</h3>
+                    <div class="code-block">
+                        <span class="code-label">Terminal</span>
+<pre><code># 3. Agregar el dominio al archivo hosts
+echo "127.0.0.1 mi-portfolio.local" | sudo tee -a /etc/hosts
+
+# 4. Activar el sitio y reiniciar Apache
+sudo a2ensite mi-portfolio.conf
+sudo systemctl restart apache2
+
+# 5. Abrir en el navegador:
+# http://mi-portfolio.local
+# ¡Tu portfolio está corriendo en Apache!
+
+# ═══ Comandos útiles ═══
+sudo a2ensite nombre.conf              # activar sitio
+sudo a2dissite nombre.conf             # desactivar sitio
+sudo systemctl restart apache2         # reiniciar
+sudo systemctl stop apache2            # detener
+sudo tail -f /var/log/apache2/error.log  # ver errores en vivo</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Debug</span>
+                Si algo falla, revisá los logs: <code>sudo tail -f /var/log/apache2/error.log</code> te muestra los errores en tiempo real.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- SLIDE 14 — Apache vs Nginx                             -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion seccion-alt" id="nginx">
+            <div class="seccion-header">
+                <span class="seccion-badge">Slide 14</span>
+                <h2 class="seccion-titulo">Apache vs Nginx — Comparativa</h2>
+                <p class="seccion-desc">Dos servidores web, dos filosofías. En producción se usan juntos.</p>
+            </div>
+
+            <div class="comparacion-grid">
+                <div class="comparacion-card comparacion-apache">
+                    <div class="comparacion-header">
+                        <h3>Apache</h3>
+                        <span class="comparacion-tag">El más antiguo y extendido</span>
+                    </div>
+                    <ul class="comparacion-lista">
+                        <li><strong>Arquitectura:</strong> Un proceso/thread por conexión</li>
+                        <li><strong>Configuración:</strong> Por directorio (<code>.htaccess</code>)</li>
+                        <li><strong>Flexibilidad:</strong> Muy configurable, muchos módulos</li>
+                        <li><strong>Ideal para:</strong> Hosting compartido, desarrollo local</li>
+                        <li><strong>En la cursada:</strong> Lo usamos para Virtual Hosts ✓</li>
+                    </ul>
+                </div>
+
+                <div class="comparacion-card comparacion-nginx-card">
+                    <div class="comparacion-header comparacion-header-alt">
+                        <h3>Nginx</h3>
+                        <span class="comparacion-tag">El más rápido para estáticos</span>
+                    </div>
+                    <ul class="comparacion-lista">
+                        <li><strong>Arquitectura:</strong> Basado en eventos (asíncrono)</li>
+                        <li><strong>Configuración:</strong> Centralizada (sin .htaccess)</li>
+                        <li><strong>Rendimiento:</strong> Superior para archivos estáticos y alto tráfico</li>
+                        <li><strong>Ideal para:</strong> Proxy reverso, producción de alto tráfico</li>
+                        <li><strong>En producción:</strong> Referencia de la industria</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Tabla comparativa detallada -->
+            <div class="contenido-grid" style="margin-top: 1.5rem;">
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Tabla Comparativa Detallada</h3>
+                    <div class="tabla-responsive">
+                        <table class="tabla-estilos">
+                            <thead>
+                                <tr>
+                                    <th>Criterio</th>
+                                    <th>Apache</th>
+                                    <th>Nginx</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Arquitectura</strong></td>
+                                    <td>Procesos/Threads (fork por conexión)</td>
+                                    <td>Eventos asíncronos (event loop)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Archivos estáticos</strong></td>
+                                    <td>Bueno</td>
+                                    <td>Excelente (2-3x más rápido)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Configuración</strong></td>
+                                    <td><code>.htaccess</code> por directorio</td>
+                                    <td>Centralizada (<code>nginx.conf</code>)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Consumo de RAM</strong></td>
+                                    <td>Mayor (un thread por conexión)</td>
+                                    <td>Menor (miles de conexiones en un proceso)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Uso en producción</strong></td>
+                                    <td>~30% de sitios web</td>
+                                    <td>~34% de sitios web (líder)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Caso de uso ideal</strong></td>
+                                    <td>Hosting compartido, PHP, dev local</td>
+                                    <td>Proxy reverso, alto tráfico, microservicios</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Diagrama proxy reverso -->
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">En Producción Real: Nginx como Proxy Reverso</h3>
+                    <div class="demo-area">
+                        <div class="proxy-diagrama">
+                            <div class="proxy-nodo proxy-cliente">
+                                <strong>💻 Cliente</strong><br>
+                                <small>(Navegador)</small>
+                            </div>
+                            <div class="proxy-flecha">→</div>
+                            <div class="proxy-nodo proxy-nginx">
+                                <strong>⚡ Nginx</strong><br>
+                                <small>:80 / :443</small><br>
+                                <small>Proxy reverso</small><br>
+                                <small>Sirve estáticos</small>
+                            </div>
+                            <div class="proxy-flecha">→</div>
+                            <div class="proxy-nodo proxy-backend">
+                                <strong>🐍 Backend</strong><br>
+                                <small>Apache / Node / FastAPI</small><br>
+                                <small>:8000</small><br>
+                                <small>Procesa lógica</small>
+                            </div>
+                        </div>
+                        <p class="proxy-nota">Nginx recibe TODOS los requests. Los estáticos (CSS, JS, imágenes) los sirve directamente. Los dinámicos (APIs) los reenvía al backend.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 En la industria</span>
+                Nginx suele estar <strong>delante</strong> como proxy reverso y Apache/Node/FastAPI <strong>detrás</strong> procesando la lógica de negocio.
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- SLIDE 6 — Práctica DevTools Network                    -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion" id="devtools">
+            <div class="seccion-header">
+                <span class="seccion-badge">Slide 6</span>
+                <h2 class="seccion-titulo">Práctica — Chrome DevTools → Network</h2>
+                <p class="seccion-desc">Tu herramienta #1 para debuggear problemas de red, APIs y carga de recursos</p>
+            </div>
+
+            <div class="contenido-grid">
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Pasos para Analizar Requests HTTP</h3>
+                    <div class="demo-area">
+                        <div class="devtools-pasos">
+                            <div class="dt-paso">
+                                <div class="dt-paso-num">1</div>
+                                <div><h4>Abrí cualquier sitio en Chrome</h4><p>Ej: <code>github.com</code> o tu portfolio local</p></div>
+                            </div>
+                            <div class="dt-paso">
+                                <div class="dt-paso-num">2</div>
+                                <div><h4><kbd>F12</kbd> → pestaña Network → recargá (<kbd>F5</kbd>)</h4><p>Vas a ver TODOS los requests del navegador</p></div>
+                            </div>
+                            <div class="dt-paso">
+                                <div class="dt-paso-num">3</div>
+                                <div><h4>Observá los requests</h4><p><code>index.html</code> (GET, 200) · <code>style.css</code> (GET, 200) · <code>script.js</code> (GET, 200) · <code>logo.png</code> (GET, 200)</p></div>
+                            </div>
+                            <div class="dt-paso">
+                                <div class="dt-paso-num">4</div>
+                                <div><h4>Hacé click en un request para ver detalles</h4><p><strong>Headers:</strong> método, URL, status code · <strong>Response:</strong> contenido devuelto · <strong>Timing:</strong> cuánto tardó</p></div>
+                            </div>
+                            <div class="dt-paso">
+                                <div class="dt-paso-num">5</div>
+                                <div><h4>Filtrá por tipo</h4><p><strong>Doc</strong> (HTML) · <strong>CSS</strong> · <strong>JS</strong> · <strong>Img</strong> · <strong>XHR</strong> (APIs/fetch)</p></div>
+                            </div>
+                            <div class="dt-paso">
+                                <div class="dt-paso-num">6</div>
+                                <div><h4>Provocá un 404</h4><p>Escribí una URL que no exista y observá el código <code>404 Not Found</code> en la pestaña Network</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulador de Network tab -->
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Simulación: Pestaña Network de DevTools</h3>
+                    <div class="demo-area demo-network">
+                        <div class="network-toolbar">
+                            <span class="network-filter network-filter-active">All</span>
+                            <span class="network-filter">Doc</span>
+                            <span class="network-filter">CSS</span>
+                            <span class="network-filter">JS</span>
+                            <span class="network-filter">Img</span>
+                            <span class="network-filter">XHR</span>
+                        </div>
+                        <div class="network-header-row">
+                            <span class="nh-name">Name</span>
+                            <span class="nh-method">Method</span>
+                            <span class="nh-status">Status</span>
+                            <span class="nh-type">Type</span>
+                            <span class="nh-size">Size</span>
+                            <span class="nh-time">Time</span>
+                        </div>
+                        <div class="network-row">
+                            <span class="nr-name">index.html</span>
+                            <span class="nr-method">GET</span>
+                            <span class="nr-status nr-200">200</span>
+                            <span class="nr-type">document</span>
+                            <span class="nr-size">4.2 kB</span>
+                            <span class="nr-time">12 ms</span>
+                        </div>
+                        <div class="network-row">
+                            <span class="nr-name">style.css</span>
+                            <span class="nr-method">GET</span>
+                            <span class="nr-status nr-200">200</span>
+                            <span class="nr-type">stylesheet</span>
+                            <span class="nr-size">8.1 kB</span>
+                            <span class="nr-time">8 ms</span>
+                        </div>
+                        <div class="network-row">
+                            <span class="nr-name">app.js</span>
+                            <span class="nr-method">GET</span>
+                            <span class="nr-status nr-200">200</span>
+                            <span class="nr-type">script</span>
+                            <span class="nr-size">15.3 kB</span>
+                            <span class="nr-time">15 ms</span>
+                        </div>
+                        <div class="network-row">
+                            <span class="nr-name">logo.png</span>
+                            <span class="nr-method">GET</span>
+                            <span class="nr-status nr-200">200</span>
+                            <span class="nr-type">png</span>
+                            <span class="nr-size">23.7 kB</span>
+                            <span class="nr-time">42 ms</span>
+                        </div>
+                        <div class="network-row">
+                            <span class="nr-name">api/user</span>
+                            <span class="nr-method">GET</span>
+                            <span class="nr-status nr-401">401</span>
+                            <span class="nr-type">xhr</span>
+                            <span class="nr-size">0.2 kB</span>
+                            <span class="nr-time">210 ms</span>
+                        </div>
+                        <div class="network-row">
+                            <span class="nr-name">noexiste.html</span>
+                            <span class="nr-method">GET</span>
+                            <span class="nr-status nr-404">404</span>
+                            <span class="nr-type">document</span>
+                            <span class="nr-size">0.5 kB</span>
+                            <span class="nr-time">5 ms</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="tip-label">🎯 Atajo</span>
+                <kbd>F12</kbd> → pestaña <strong>Network</strong> → <kbd>F5</kbd> para recargar y ver todos los requests. Es tu herramienta #1 para debuggear la web.
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-contenido">
+            <p class="footer-titulo">Prácticas Profesionalizantes II · Programador Junior</p>
+            <p class="footer-subtitulo">Clase 11: Redes, HTTP y Cliente-Servidor + Apache & Nginx</p>
+            <p class="footer-creditos">Por Ing. Díaz Ayrton — 2026</p>
+        </div>
+    </footer>
+
+    <script>
+    function simularRequest() {
+        const pasos = [
+            { icono: "1️⃣", texto: "<strong>DNS Lookup:</strong> El navegador pregunta al DNS: ¿cuál es la IP de <code>mi-portfolio.local</code>? → <code>127.0.0.1</code>", clase: "sim-paso-dns" },
+            { icono: "2️⃣", texto: "<strong>TCP Connection:</strong> Se establece una conexión TCP con el servidor en <code>127.0.0.1:80</code>", clase: "sim-paso-tcp" },
+            { icono: "3️⃣", texto: "<strong>HTTP Request:</strong> <code>GET /index.html HTTP/1.1</code><br>Host: mi-portfolio.local<br>User-Agent: Chrome/124", clase: "sim-paso-req" },
+            { icono: "4️⃣", texto: "<strong>Servidor procesa:</strong> Apache busca <code>/var/www/mi-portfolio/index.html</code> en el disco...", clase: "sim-paso-proc" },
+            { icono: "5️⃣", texto: "<strong>HTTP Response:</strong> <code>HTTP/1.1 200 OK</code><br>Content-Type: text/html<br>Content-Length: 4253 bytes", clase: "sim-paso-res" },
+            { icono: "✅", texto: "<strong>Renderizado:</strong> El navegador recibe el HTML, pide CSS/JS/imágenes (más GETs) y pinta la página.", clase: "sim-paso-done" },
+        ];
+
+        const container = document.getElementById('simPasos');
+        const btn = document.getElementById('simBtn');
+        container.innerHTML = '';
+        btn.disabled = true;
+        btn.textContent = 'Cargando...';
+
+        pasos.forEach((paso, i) => {
+            setTimeout(() => {
+                const div = document.createElement('div');
+                div.className = `sim-paso ${paso.clase}`;
+                div.innerHTML = `<span class="sim-paso-num">${paso.icono}</span><div>${paso.texto}</div>`;
+                div.style.opacity = '0';
+                div.style.transform = 'translateX(-20px)';
+                container.appendChild(div);
+                requestAnimationFrame(() => {
+                    div.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                    div.style.opacity = '1';
+                    div.style.transform = 'translateX(0)';
+                });
+                if (i === pasos.length - 1) {
+                    setTimeout(() => { btn.disabled = false; btn.textContent = 'Repetir ↻'; }, 500);
+                }
+            }, (i + 1) * 700);
+        });
+    }
+    </script>
+
+</body>
+</html>
