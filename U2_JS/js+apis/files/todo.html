@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP5 Consigna 3 — To-Do App Interactiva</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">PP2 <span class="logo-accent">JS</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">← Clase 14</a></li>
+            <li class="nav-separator">|</li>
+            <li><a href="productos.html" class="nav-tp">🛒 Productos</a></li>
+            <li><a href="todo.html" class="nav-active nav-tp">✅ To-Do App</a></li>
+            <li><a href="api-demo.html" class="nav-tp">🌐 APIs</a></li>
+        </ul>
+    </nav>
+
+    <section class="page-header">
+        <div class="page-header-content">
+            <span class="seccion-badge">TP5 · Consigna 3</span>
+            <h1>Lista de Tareas Interactiva</h1>
+            <p>Agregar · Completar (tachado) · Eliminar · Contador dinámico · <code>DOM</code> + <code>Eventos</code></p>
+        </div>
+    </section>
+
+    <main class="todo-page">
+        <div class="todo-app">
+            <div class="todo-header">
+                <h2>Mis Tareas</h2>
+                <span class="todo-contador" id="contador">0 pendientes</span>
+            </div>
+
+            <form id="form-tarea" class="todo-form">
+                <input type="text" id="input-tarea" class="todo-input" placeholder="¿Qué tenés que hacer?" required>
+                <button type="submit" class="todo-btn-agregar">+ Agregar</button>
+            </form>
+
+            <!-- Filtros de tareas -->
+            <div class="todo-filtros">
+                <button class="todo-filtro-btn activo" data-filtro="todas">Todas</button>
+                <button class="todo-filtro-btn" data-filtro="pendientes">Pendientes</button>
+                <button class="todo-filtro-btn" data-filtro="completadas">Completadas</button>
+            </div>
+
+            <ul id="lista-tareas" class="todo-lista"></ul>
+
+            <div class="todo-vacio" id="todo-vacio">
+                <span class="estado-emoji">📝</span>
+                <p>No hay tareas. ¡Agregá una arriba!</p>
+            </div>
+        </div>
+
+        <!-- Código fuente -->
+        <div class="todo-codigo">
+            <div class="seccion-header">
+                <span class="seccion-badge">Código Fuente</span>
+                <h2 class="seccion-titulo">¿Cómo funciona?</h2>
+            </div>
+            <div class="code-block"><span class="code-label">todo.js — Lógica principal</span>
+<pre><code>const form = document.querySelector("#form-tarea");
+const input = document.querySelector("#input-tarea");
+const lista = document.querySelector("#lista-tareas");
+
+// Agregar tarea con preventDefault
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const texto = input.value.trim();
+  if (!texto) return;  // no agregar vacías
+
+  const li = document.createElement("li");
+  li.innerHTML = `
+    &lt;span class="tarea-texto"&gt;${texto}&lt;/span&gt;
+    &lt;div class="tarea-acciones"&gt;
+      &lt;button class="btn-completar"&gt;✓&lt;/button&gt;
+      &lt;button class="btn-eliminar"&gt;✕&lt;/button&gt;
+    &lt;/div&gt;
+  `;
+
+  // Completar: classList.toggle("completada")
+  li.querySelector(".btn-completar").addEventListener("click", () => {
+    li.classList.toggle("completada");
+    actualizarContador();
+  });
+
+  // Eliminar: .remove()
+  li.querySelector(".btn-eliminar").addEventListener("click", () => {
+    li.remove();
+    actualizarContador();
+  });
+
+  lista.appendChild(li);
+  input.value = "";
+  actualizarContador();
+});
+
+// Contador dinámico
+const actualizarContador = () => {
+  const pendientes = lista.querySelectorAll("li:not(.completada)").length;
+  contador.textContent = `${pendientes} pendientes`;
+};</code></pre></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-titulo">TP5 Consigna 3 — To-Do App Interactiva</p>
+        <p class="footer-creditos">Prácticas Profesionalizantes II · Ing. Díaz Ayrton — 2026</p>
+    </footer>
+
+    <script src="todo.js"></script>
+</body>
+</html>

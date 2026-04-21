@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP5 Consignas 4-5 — Fetch API + Buscador Dinámico</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">PP2 <span class="logo-accent">JS</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">← Clase 14</a></li>
+            <li class="nav-separator">|</li>
+            <li><a href="productos.html" class="nav-tp">🛒 Productos</a></li>
+            <li><a href="todo.html" class="nav-tp">✅ To-Do</a></li>
+            <li><a href="api-demo.html" class="nav-active nav-tp">🌐 APIs</a></li>
+        </ul>
+    </nav>
+
+    <section class="page-header">
+        <div class="page-header-content">
+            <span class="seccion-badge">TP5 · Consignas 4 y 5</span>
+            <h1>Consumir APIs con fetch + Buscador Dinámico</h1>
+            <p>async/await · fetch() · response.ok · try/catch · Estados: loading / error / vacío · <code>addEventListener("input")</code></p>
+        </div>
+    </section>
+
+    <main>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- SELECTOR DE API                                        -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion" id="selector">
+            <div class="seccion-header">
+                <span class="seccion-badge">Elegí una API</span>
+                <h2 class="seccion-titulo">3 Ejemplos con APIs Públicas Gratuitas</h2>
+                <p class="seccion-desc">Cada ejemplo implementa: fetch, async/await, try/catch, loading, error, buscador dinámico</p>
+            </div>
+
+            <div class="api-selector">
+                <button class="api-tab activo" onclick="cambiarAPI('rick')" id="tab-rick">
+                    <span class="api-tab-emoji">👽</span>
+                    <span class="api-tab-nombre">Rick and Morty</span>
+                    <span class="api-tab-url">rickandmortyapi.com</span>
+                </button>
+                <button class="api-tab" onclick="cambiarAPI('pokemon')" id="tab-pokemon">
+                    <span class="api-tab-emoji">⚡</span>
+                    <span class="api-tab-nombre">PokéAPI</span>
+                    <span class="api-tab-url">pokeapi.co</span>
+                </button>
+                <button class="api-tab" onclick="cambiarAPI('countries')" id="tab-countries">
+                    <span class="api-tab-emoji">🌍</span>
+                    <span class="api-tab-nombre">REST Countries</span>
+                    <span class="api-tab-url">restcountries.com</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- BUSCADOR + RESULTADOS                                  -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion seccion-alt" id="demo">
+            <div class="api-demo-container">
+                <!-- Buscador -->
+                <div class="buscador-container">
+                    <div class="buscador-icon">🔍</div>
+                    <input type="text" id="busqueda-api" class="buscador-input" placeholder="Buscar personaje...">
+                    <span class="buscador-hint" id="buscador-hint">Escribí al menos 3 caracteres</span>
+                </div>
+
+                <!-- Estado actual -->
+                <div id="api-estado" class="api-estado"></div>
+
+                <!-- Resultados -->
+                <div id="api-resultados" class="api-resultados-grid"></div>
+
+                <!-- Vacío -->
+                <div id="api-vacio" class="estado-vacio" style="display:none;">
+                    <span class="estado-emoji">🔍</span>
+                    <p>No se encontraron resultados.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- CÓDIGO FUENTE                                          -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion" id="codigo">
+            <div class="seccion-header">
+                <span class="seccion-badge">Código Fuente</span>
+                <h2 class="seccion-titulo">¿Cómo funciona? — Paso a Paso</h2>
+            </div>
+
+            <div class="contenido-grid">
+                <!-- Fetch básico -->
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Consigna 4: Fetch básico con async/await</h3>
+                    <div class="code-block"><span class="code-label">api.js — Función principal</span>
+<pre><code>// (a) función async que haga fetch()
+const cargarPersonajes = async () => {
+
+  // (d) estado "Cargando..."
+  container.innerHTML = '&lt;p class="loading"&gt;Cargando...&lt;/p&gt;';
+
+  // (c) try/catch para manejar errores
+  try {
+    const response = await fetch(
+      "https://rickandmortyapi.com/api/character"
+    );
+
+    // (b) verificar response.ok
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // (e) renderizar como tarjetas con .map()
+    container.innerHTML = data.results.map(p => `
+      &lt;article class="card"&gt;
+        &lt;img src="${p.image}" alt="${p.name}"&gt;
+        &lt;h3&gt;${p.name}&lt;/h3&gt;
+        &lt;p&gt;${p.species} - ${p.status}&lt;/p&gt;
+      &lt;/article&gt;
+    `).join("");
+
+  } catch (error) {
+    // (f) mostrar mensaje de error visible
+    container.innerHTML =
+      `&lt;p class="error"&gt;❌ ${error.message}&lt;/p&gt;`;
+  }
+};
+
+cargarPersonajes(); // ejecutar al cargar la página</code></pre>
+                    </div>
+                </div>
+
+                <!-- Buscador dinámico -->
+                <div class="ejemplo-card ejemplo-card-wide">
+                    <h3 class="card-titulo">Consigna 5: Buscador dinámico con addEventListener("input")</h3>
+                    <div class="code-block"><span class="code-label">api.js — Buscador</span>
+<pre><code>let todosLosPersonajes = []; // cache global
+
+// Cargar datos y guardar en cache
+const cargarYGuardar = async () => {
+  try {
+    const res = await fetch("https://rickandmortyapi.com/api/character");
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    const data = await res.json();
+    todosLosPersonajes = data.results;
+    renderizar(todosLosPersonajes);
+  } catch (err) {
+    mostrarError(err.message);
+  }
+};
+
+// (a) Escuchar cambios en el input
+document.querySelector("#busqueda")
+  .addEventListener("input", (e) => {
+    const texto = e.target.value.trim().toLowerCase();
+
+    // (a) no buscar si hay menos de 3 caracteres
+    if (texto.length > 0 && texto.length < 3) {
+      mostrarHint("Escribí al menos 3 caracteres");
+      return;
+    }
+
+    // Filtrar localmente con .filter()
+    const filtrados = todosLosPersonajes.filter(p =>
+      p.name.toLowerCase().includes(texto)
+    );
+
+    // (d) mostrar "No se encontraron resultados"
+    if (filtrados.length === 0) {
+      mostrarVacio();
+      return;
+    }
+
+    // (c) actualizar las tarjetas
+    renderizar(filtrados);
+  });</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <!-- APIs RECOMENDADAS                                      -->
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="seccion seccion-alt" id="apis-recomendadas">
+            <div class="seccion-header">
+                <span class="seccion-badge">Recursos</span>
+                <h2 class="seccion-titulo">APIs Públicas Gratuitas Recomendadas</h2>
+                <p class="seccion-desc">Todas son gratuitas, no requieren API key y devuelven JSON</p>
+            </div>
+
+            <!-- APIs de la consigna -->
+            <h3 class="sub-titulo">APIs de la Consigna del TP5</h3>
+            <div class="apis-grid">
+                <a href="https://rickandmortyapi.com/documentation" target="_blank" class="api-card">
+                    <span class="api-card-emoji">👽</span>
+                    <h4>Rick and Morty API</h4>
+                    <code>rickandmortyapi.com/api/character</code>
+                    <p>826 personajes con imagen, especie, estado, episodios. Soporta búsqueda por nombre y filtros.</p>
+                    <span class="api-card-tag">Sin API key · Búsqueda por query</span>
+                </a>
+                <a href="https://pokeapi.co/docs/v2" target="_blank" class="api-card">
+                    <span class="api-card-emoji">⚡</span>
+                    <h4>PokéAPI</h4>
+                    <code>pokeapi.co/api/v2/pokemon</code>
+                    <p>1000+ pokémon con stats, tipos, sprites. Cada pokémon requiere un fetch individual para detalles.</p>
+                    <span class="api-card-tag">Sin API key · Filtrar local</span>
+                </a>
+                <a href="https://restcountries.com/" target="_blank" class="api-card">
+                    <span class="api-card-emoji">🌍</span>
+                    <h4>REST Countries</h4>
+                    <code>restcountries.com/v3.1/all</code>
+                    <p>250 países con bandera, capital, población, región, idiomas. Búsqueda por nombre nativa.</p>
+                    <span class="api-card-tag">Sin API key · Búsqueda por query</span>
+                </a>
+                <a href="https://jsonplaceholder.typicode.com/" target="_blank" class="api-card">
+                    <span class="api-card-emoji">📋</span>
+                    <h4>JSONPlaceholder</h4>
+                    <code>jsonplaceholder.typicode.com/users</code>
+                    <p>Fake API con usuarios, posts, comments, todos. Ideal para practicar GET, POST, PUT, DELETE.</p>
+                    <span class="api-card-tag">Sin API key · Fake REST API</span>
+                </a>
+            </div>
+
+            <!-- APIs extras -->
+            <h3 class="sub-titulo" style="margin-top: 2rem;">Otras APIs Gratuitas (para proyectos futuros)</h3>
+            <div class="apis-grid">
+                <a href="https://dog.ceo/dog-api/" target="_blank" class="api-card api-card-mini">
+                    <span class="api-card-emoji">🐕</span>
+                    <h4>Dog API</h4>
+                    <code>dog.ceo/api/breeds/image/random</code>
+                    <p>Imágenes random de perros por raza.</p>
+                </a>
+                <a href="https://www.thecocktaildb.com/api.php" target="_blank" class="api-card api-card-mini">
+                    <span class="api-card-emoji">🍹</span>
+                    <h4>CocktailDB</h4>
+                    <code>thecocktaildb.com/api/json/v1/1/search.php</code>
+                    <p>Recetas de tragos con ingredientes.</p>
+                </a>
+                <a href="https://api.openweathermap.org/" target="_blank" class="api-card api-card-mini">
+                    <span class="api-card-emoji">🌤️</span>
+                    <h4>OpenWeather</h4>
+                    <code>api.openweathermap.org</code>
+                    <p>Clima actual y pronóstico. Requiere API key (gratis).</p>
+                </a>
+                <a href="https://openlibrary.org/developers/api" target="_blank" class="api-card api-card-mini">
+                    <span class="api-card-emoji">📚</span>
+                    <h4>Open Library</h4>
+                    <code>openlibrary.org/search.json</code>
+                    <p>Libros, autores, portadas. Sin API key.</p>
+                </a>
+                <a href="https://api.spacexdata.com/" target="_blank" class="api-card api-card-mini">
+                    <span class="api-card-emoji">🚀</span>
+                    <h4>SpaceX API</h4>
+                    <code>api.spacexdata.com/v4/launches</code>
+                    <p>Lanzamientos, cohetes, cápsulas. Sin API key.</p>
+                </a>
+                <a href="https://github.com/public-apis/public-apis" target="_blank" class="api-card api-card-mini api-card-highlight">
+                    <span class="api-card-emoji">📂</span>
+                    <h4>Lista Completa</h4>
+                    <code>github.com/public-apis/public-apis</code>
+                    <p>1400+ APIs públicas organizadas por categoría. El repositorio más completo.</p>
+                </a>
+            </div>
+
+            <div class="tip-box" style="margin-top: 1.5rem;">
+                <span class="tip-label">🎯 Tip</span>
+                Para encontrar más APIs, buscá en <strong>github.com/public-apis/public-apis</strong>. Tiene 1400+ APIs organizadas por categoría, con indicador de si necesitan API key o no.
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p class="footer-titulo">TP5 Consignas 4-5 — Fetch API + Buscador Dinámico</p>
+        <p class="footer-creditos">Prácticas Profesionalizantes II · Ing. Díaz Ayrton — 2026</p>
+    </footer>
+
+    <script src="api-demo.js"></script>
+</body>
+</html>

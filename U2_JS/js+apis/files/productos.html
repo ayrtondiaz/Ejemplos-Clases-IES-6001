@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP5 Consigna 2 — Sistema de Filtrado de Productos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">PP2 <span class="logo-accent">JS</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">← Clase 14</a></li>
+            <li class="nav-separator">|</li>
+            <li><a href="productos.html" class="nav-active nav-tp">🛒 Productos</a></li>
+            <li><a href="todo.html" class="nav-tp">✅ To-Do App</a></li>
+            <li><a href="api-demo.html" class="nav-tp">🌐 APIs</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header de la página -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <span class="seccion-badge">TP5 · Consigna 2</span>
+            <h1>Sistema de Filtrado de Productos</h1>
+            <p>8 productos · 4 filtros combinados · Actualización en tiempo real con <code>map()</code> + <code>filter()</code></p>
+        </div>
+    </section>
+
+    <main class="app-container">
+
+        <!-- Panel de filtros -->
+        <aside class="filtros-panel">
+            <h3 class="filtros-titulo">Filtros</h3>
+
+            <!-- Búsqueda -->
+            <div class="filtro-grupo">
+                <label for="busqueda">🔍 Buscar por nombre</label>
+                <input type="text" id="busqueda" class="filtro-input" placeholder="Escribí para buscar...">
+            </div>
+
+            <!-- Categoría -->
+            <div class="filtro-grupo">
+                <label for="categoria">📂 Categoría</label>
+                <select id="categoria" class="filtro-input">
+                    <option value="todas">Todas</option>
+                    <option value="Electrónica">Electrónica</option>
+                    <option value="Ropa">Ropa</option>
+                    <option value="Accesorios">Accesorios</option>
+                </select>
+            </div>
+
+            <!-- Precio -->
+            <div class="filtro-grupo">
+                <label for="precio">💰 Precio máximo: $<span id="precio-valor">1500</span></label>
+                <input type="range" id="precio" class="filtro-range" min="0" max="1500" value="1500">
+            </div>
+
+            <!-- Stock -->
+            <div class="filtro-grupo filtro-check-group">
+                <label for="stock">📦 Solo en stock</label>
+                <input type="checkbox" id="stock" class="filtro-checkbox">
+            </div>
+
+            <!-- Contador -->
+            <div class="filtro-resultado">
+                <span id="contador-productos">8 productos</span>
+            </div>
+
+            <!-- Reset -->
+            <button class="btn-reset" id="btn-reset">Limpiar filtros</button>
+        </aside>
+
+        <!-- Grilla de productos -->
+        <section class="productos-area">
+            <div id="productos-lista" class="productos-grid"></div>
+            <div id="productos-vacio" class="estado-vacio" style="display:none;">
+                <span class="estado-emoji">🔍</span>
+                <p>No se encontraron productos con esos filtros.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Código fuente visible -->
+    <section class="seccion" style="max-width: 900px; margin: 0 auto;">
+        <div class="seccion-header">
+            <span class="seccion-badge">Código Fuente</span>
+            <h2 class="seccion-titulo">¿Cómo funciona?</h2>
+        </div>
+        <div class="code-block"><span class="code-label">productos.js — Lógica principal</span>
+<pre><code>// Array de productos
+const productos = [
+  { id: 1, nombre: "Laptop", precio: 1200, categoria: "Electrónica", enStock: true },
+  { id: 2, nombre: "Mouse",  precio: 25,   categoria: "Electrónica", enStock: true },
+  // ... 8 productos
+];
+
+// Función de filtrado — encadena .filter() por cada criterio
+const filtrarProductos = () => {
+  const texto = busqueda.value.toLowerCase();
+  const cat = categoria.value;
+  const precioMax = Number(precio.value);
+  const soloStock = stock.checked;
+
+  const resultado = productos
+    .filter(p => p.nombre.toLowerCase().includes(texto))  // búsqueda
+    .filter(p => cat === "todas" || p.categoria === cat)   // categoría
+    .filter(p => p.precio <= precioMax)                    // precio
+    .filter(p => !soloStock || p.enStock);                 // stock
+
+  renderProductos(resultado);
+};
+
+// Renderizar con .map() + innerHTML
+const renderProductos = (lista) => {
+  container.innerHTML = lista.map(p => `
+    &lt;article class="card ${!p.enStock ? 'sin-stock' : ''}"&gt;
+      &lt;h3&gt;${p.nombre}&lt;/h3&gt;
+      &lt;p class="precio"&gt;$${p.precio}&lt;/p&gt;
+      &lt;span class="cat"&gt;${p.categoria}&lt;/span&gt;
+    &lt;/article&gt;
+  `).join("");
+};
+
+// Escuchar TODOS los filtros
+[busqueda, categoria, precio, stock].forEach(el =>
+  el.addEventListener("input", filtrarProductos)
+);</code></pre></div>
+    </section>
+
+    <footer class="footer">
+        <p class="footer-titulo">TP5 Consigna 2 — Sistema de Filtrado de Productos</p>
+        <p class="footer-creditos">Prácticas Profesionalizantes II · Ing. Díaz Ayrton — 2026</p>
+    </footer>
+
+    <script src="productos.js"></script>
+</body>
+</html>
