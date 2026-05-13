@@ -1,0 +1,343 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f0f2f5;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* ===== LAYOUT ===== */
+.app {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.app h1 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #1e3a5f;
+}
+
+.app .subtitulo {
+  text-align: center;
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* Navegacion */
+.nav {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.nav button {
+  padding: 0.5rem 1rem;
+  border: 2px solid #ddd;
+  border-radius: 50px;
+  background: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.nav button:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.nav button.activo {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+/* Panel principal */
+.panel {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.panel h2 {
+  color: #1e3a5f;
+  margin-bottom: 0.3rem;
+  font-size: 1.3rem;
+}
+
+.panel .desc {
+  color: #666;
+  font-size: 0.85rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.panel .desc code {
+  background: #e8f0fe;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+/* ===== PRODUCTOS (Ej 5) ===== */
+.filtros {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filtros select {
+  padding: 0.4rem 0.8rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.filtros label {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.producto-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: box-shadow 0.2s;
+}
+
+.producto-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.producto-card .nombre {
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.producto-card .precio {
+  color: #10b981;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.producto-card .categoria {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.3rem;
+}
+
+.producto-card .sin-stock {
+  opacity: 0.5;
+}
+
+.producto-card .badge-stock {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 0.3rem;
+}
+
+.badge-si {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-no {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.vacio {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+  grid-column: 1 / -1;
+}
+
+/* ===== TODO APP (Ej 6) ===== */
+.todo-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.todo-form input {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.todo-form input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.todo-form button {
+  padding: 0.5rem 1rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.todo-form button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.pendientes-badge {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.8rem;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.todo-item:hover {
+  background: #f9fafb;
+  border-radius: 6px;
+}
+
+.todo-check {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  transition: all 0.15s;
+}
+
+.todo-check.done {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+
+.todo-texto {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.todo-texto.tachado {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.todo-borrar {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 0.3rem;
+}
+
+.todo-borrar:hover {
+  color: #ef4444;
+}
+
+/* ===== USE EFFECT EXAMPLES ===== */
+.usuarios-lista {
+  list-style: none;
+}
+
+.usuarios-lista li {
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.95rem;
+}
+
+.usuarios-lista li:last-child {
+  border-bottom: none;
+}
+
+.cargando {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+}
+
+.reloj-numero {
+  font-size: 4rem;
+  font-weight: 700;
+  text-align: center;
+  color: #3b82f6;
+  font-variant-numeric: tabular-nums;
+  padding: 1rem 0;
+}
+
+.reloj-estado {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.reloj-estado button {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin: 0 0.3rem;
+}
+
+/* Codigo explicativo */
+.codigo {
+  background: #1f2937;
+  color: #e2e8f0;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-family: "Consolas", monospace;
+  font-size: 0.8rem;
+  margin-top: 1.2rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.codigo .cm { color: #6b7280; font-style: italic; }
+.codigo .kw { color: #c084fc; }
+.codigo .fn { color: #60a5fa; }
+.codigo .st { color: #34d399; }
+
+@media (max-width: 500px) {
+  .productos-grid {
+    grid-template-columns: 1fr;
+  }
+}
