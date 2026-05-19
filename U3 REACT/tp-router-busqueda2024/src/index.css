@@ -1,0 +1,32 @@
+/* Reset global (Ejercicio 5: mantener un index.css global para reset + fuentes) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --azul: #3b82f6;
+  --azul-oscuro: #1e3a5f;
+  --azul-claro: #dbeafe;
+  --verde: #10b981;
+  --rojo: #ef4444;
+  --rojo-claro: #fee2e2;
+  --gris-100: #f3f4f6;
+  --gris-200: #e5e7eb;
+  --gris-400: #9ca3af;
+  --gris-600: #4b5563;
+  --gris-800: #1f2937;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--gris-100);
+  color: var(--gris-800);
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

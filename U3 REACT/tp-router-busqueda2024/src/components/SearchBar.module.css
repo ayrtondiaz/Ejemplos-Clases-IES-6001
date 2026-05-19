@@ -1,0 +1,37 @@
+.wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.7rem 2.5rem 0.7rem 1rem;
+  border: 2px solid var(--gris-200);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  background: white;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--azul);
+}
+
+.clear {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--gris-400);
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+}
+
+.clear:hover {
+  color: var(--rojo);
+}

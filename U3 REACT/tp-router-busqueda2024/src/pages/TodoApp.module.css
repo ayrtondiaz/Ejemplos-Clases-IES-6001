@@ -1,0 +1,41 @@
+.titulo { font-size: 1.5rem; color: var(--azul-oscuro); margin-bottom: 0.3rem; }
+.desc { color: var(--gris-600); font-size: 0.85rem; margin-bottom: 1rem; }
+.desc code { background: var(--azul-claro); padding: 1px 5px; border-radius: 4px; font-size: 0.8rem; }
+
+.form { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.input {
+  flex: 1; padding: 0.6rem 1rem; border: 2px solid var(--gris-200);
+  border-radius: 8px; font-size: 0.95rem; font-family: inherit;
+}
+.input:focus { outline: none; border-color: var(--azul); }
+.btnAdd {
+  padding: 0.6rem 1.2rem; background: var(--azul); color: white;
+  border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+}
+.btnAdd:disabled { background: var(--gris-200); cursor: not-allowed; }
+
+.counter { font-size: 0.85rem; color: var(--gris-400); margin-bottom: 0.5rem; }
+.vacio { text-align: center; padding: 2rem; color: var(--gris-400); }
+
+.lista { list-style: none; background: white; border-radius: 10px; border: 1px solid var(--gris-200); overflow: hidden; }
+.item {
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--gris-100);
+}
+.item:last-child { border-bottom: none; }
+
+.check {
+  width: 22px; height: 22px; border: 2px solid var(--gris-200); border-radius: 6px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 0.7rem; transition: all 0.15s;
+}
+.done { background: var(--verde); border-color: var(--verde); color: white; }
+
+.texto { flex: 1; font-size: 0.95rem; }
+.tachado { text-decoration: line-through; color: var(--gris-400); }
+
+.btnDel {
+  background: none; border: none; color: var(--gris-400); font-size: 1.2rem;
+  cursor: pointer; padding: 0 0.3rem;
+}
+.btnDel:hover { color: var(--rojo); }

@@ -1,0 +1,50 @@
+/* Ejercicio 5: CSS Modules — cada clase se renombra automaticamente
+   para evitar colisiones. Se importa como objeto: styles.navbar */
+
+.navbar {
+  background: var(--azul-oscuro);
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.logo {
+  color: white;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
+}
+
+.links {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.link {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.activo {
+  color: white;
+  background: var(--azul);
+}

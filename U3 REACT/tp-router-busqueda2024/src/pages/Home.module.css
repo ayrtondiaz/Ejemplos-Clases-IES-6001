@@ -1,0 +1,79 @@
+.hero {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, var(--azul-oscuro), #2563eb);
+  border-radius: 12px;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.titulo {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.subtitulo {
+  font-size: 1.05rem;
+  opacity: 0.85;
+  margin-bottom: 1.5rem;
+}
+
+.cta {
+  padding: 0.7rem 2rem;
+  background: white;
+  color: var(--azul-oscuro);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.cta:hover {
+  transform: scale(1.05);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .features {
+    grid-template-columns: 1fr;
+  }
+}
+
+.featureCard {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid var(--gris-200);
+  transition: transform 0.2s;
+}
+
+.featureCard:hover {
+  transform: translateY(-3px);
+}
+
+.emoji {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.7rem;
+}
+
+.featureTitulo {
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+  color: var(--azul-oscuro);
+}
+
+.featureDesc {
+  font-size: 0.85rem;
+  color: var(--gris-600);
+  line-height: 1.5;
+}

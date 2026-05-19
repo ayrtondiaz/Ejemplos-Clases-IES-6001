@@ -1,0 +1,52 @@
+.titulo {
+  font-size: 1.5rem;
+  color: var(--azul-oscuro);
+  margin-bottom: 0.3rem;
+}
+
+.desc {
+  color: var(--gris-600);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.desc code {
+  background: var(--azul-claro);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mensaje {
+  text-align: center;
+  padding: 2rem;
+  color: var(--gris-400);
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: var(--rojo);
+  background: var(--rojo-claro);
+  border-radius: 8px;
+}
+
+.counter {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--gris-400);
+  margin-top: 1rem;
+}
