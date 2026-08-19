@@ -17,7 +17,7 @@ import { useState, useEffect } from "react";
  *     fetch -> setState -> re-render -> fetch -> setState -> ...
  *   - useEffect controla CUANDO se ejecuta el efecto
  */
-
+// import { useState } from "react";
 function FetchUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -31,16 +31,19 @@ function FetchUsuarios() {
         setCargando(true);
         const respuesta = await fetch(
           "https://jsonplaceholder.typicode.com/users"
+          // "https://jsonplaceholder.typicode.com/userss"
         );
 
         if (!respuesta.ok) {
           throw new Error("Error al cargar los datos");
         }
-
+        // console.log(respuesta)
         const datos = await respuesta.json();
+        // console.log(datos)
         setUsuarios(datos);
       } catch (err) {
         setError(err.message);
+        console.log(err.message)
       } finally {
         setCargando(false);
       }
@@ -48,7 +51,7 @@ function FetchUsuarios() {
 
     cargarUsuarios();
   }, []); // <-- array vacio: solo se ejecuta UNA vez
-
+// console.log(cargarUsuarios())
   return (
     <div>
       <h2>useEffect: Fetch de API</h2>

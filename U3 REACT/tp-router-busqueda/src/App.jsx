@@ -51,7 +51,7 @@ export default function App() {
           <Route path="/ej4/usuario/:id" element={<UserDetail />} />
           <Route path="/ej5" element={<Ej5Modules />} />
           <Route path="/ej6" element={<Ej6Home />} />
-          <Route path="*" element={
+          <Route path="a" element={
             <div className="panel" style={{ textAlign: 'center' }}>
               <h2>404 — Pagina no encontrada</h2>
               <p style={{ margin: '16px 0' }}>La ruta no existe.</p>
